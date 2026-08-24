@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Устройства — Verifix</title>
+<link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span class="topbar__hamburger">☰</span> Устройства</div>
+  <nav class="topbar__tabs">
+    <a href="#" class="topbar__tab is-active">Новые устройства</a>
+    <a href="#" class="topbar__tab">Состояние сотрудников по устройствам</a>
+  </nav>
+  <div class="topbar__right">
+    <button class="icon-btn" title="Вид">▦</button>
+    <button class="icon-btn" title="Оповещения">📣</button>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar__left">
+    <button class="btn btn--create">СОЗДАТЬ <span class="btn__caret">▾</span></button>
+  </div>
+  <div class="toolbar__right">
+    <input type="text" class="search-input" placeholder="Поиск..." />
+    <button class="icon-btn" title="Фильтр">⏷</button>
+    <button class="icon-btn" title="Закрепить">📌</button>
+    <span class="toolbar__count">{{ devices|length }} / {{ devices|length }}</span>
+    <button class="icon-btn" title="Назад">‹</button>
+    <span class="toolbar__page">1</span>
+    <button class="icon-btn" title="Вперёд">›</button>
+    <button class="icon-btn" title="Обновить">⟳</button>
+    <button class="icon-btn" title="Меню">☰</button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="card">
+      <div class="card__title">Статус устройств</div>
+      <div class="donut-wrap">
+        <div class="donut" style="--online:{{ summary.online_pct }}; --offline:{{ summary.offline_pct }}; --unknown:{{ summary.unknown_pct }};">
+          <div class="donut__center">{{ summary.total }}</div>
+        </div>
+      </div>
+      <ul class="legend">
+        {% if summary.offline %}<li><span class="legend__dot legend__dot--offline"></span>Не в сети <b>{{ summary.offline }} ({{ summary.offline_pct }}%)</b></li>{% endif %}
+        {% if summary.unknown %}<li><span class="legend__dot legend__dot--unknown"></span>Неизвестно <b>{{ summary.unknown }} ({{ summary.unknown_pct }}%)</b></li>{% endif %}
+        {% if summary.online %}<li><span class="legend__dot legend__dot--online"></span>В сети <b>{{ summary.online }} ({{ summary.online_pct }}%)</b></li>{% endif %}
+      </ul>
+    </div>
+
+    <div class="card card--attention">
+      <div class="card__big-number">{{ summary.needs_attention }}</div>
+      <div class="card__caption">Требует внимания <span class="info-dot" title="Устройства не в сети или с неизвестным статусом">ⓘ</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card__ok"><span class="card__ok-icon">✓</span> Ошибок нет</div>
+      <div class="card__caption">Ошибки команд за 24 часа</div>
+    </div>
+
+    <div class="card">
+      <div class="card__title">Ошибки команд за 72 ч <span class="expand-icon" title="Развернуть">⤢</span></div>
+      <div class="card__ok"><span class="card__ok-icon">✓</span> Ошибок нет</div>
+    </div>
+  </aside>
+
+  <main class="table-wrap">
+    <table class="devices-table">
+      <thead>
+        <tr>
+          <th class="col-check"><input type="checkbox" /></th>
+          <th>Тип устройства</th>
+          <th>Готово</th>
+          <th>Серийный номер</th>
+          <th>Название</th>
+          <th>Локация</th>
+          <th>Временная зона</th>
+          <th>Статус</th>
+          <th>Время последней активности</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in devices %}
+        <tr>
+          <td class="col-check"><input type="checkbox" /></td>
+          <td><span class="device-badge device-badge--{{ d.kind|lower }}">{{ d.kind }}</span></td>
+          <td>{{ '✓' if d.ready else '—' }}</td>
+          <td>{{ d.serial }}</td>
+          <td>{{ d.name }}</td>
+          <td>{{ d.location }}</td>
+          <td>{{ d.tz }}</td>
+          <td><span class="status-dot status-dot--{{ d.status }}"></span>{{ status_label[d.status] }}</td>
+          <td>{{ d.last_seen or '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<footer class="page-footer">Copyright © 2020-2026, Verifix. Мок-концепт для инструкции по интеграции с HikVision — не боевые данные.</footer>
+
+</body>
+</html>
