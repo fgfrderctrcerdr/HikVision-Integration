@@ -24,6 +24,7 @@ body { margin: 0; background: var(--bg); color: var(--text); font-size: 13.5px; 
 .topbar__tabs { display: flex; gap: 22px; flex: 1; }
 .topbar__tab { color: #cbd5e1; text-decoration: none; font-size: 13px; padding: 4px 0; border-bottom: 2px solid transparent; }
 .topbar__tab.is-active { color: #fff; border-bottom-color: var(--teal); font-weight: 600; }
+.topbar__tab--guide { margin-left: auto; color: #5eead4 !important; }
 .topbar__right { display: flex; gap: 6px; }
 .icon-btn {
   background: transparent; border: 1px solid transparent; color: inherit; cursor: pointer;

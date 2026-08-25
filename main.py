@@ -69,4 +69,9 @@ def devices_page(request: Request):
     })
 
 
+@app.get("/how-to-find-ip")
+def how_to_find_ip_page(request: Request):
+    return templates.TemplateResponse(request, "how_to_find_ip.html", {})
+
+
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")

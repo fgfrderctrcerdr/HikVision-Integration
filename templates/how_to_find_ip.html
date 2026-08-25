@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Как узнать IP-адрес устройства — Verifix</title>
+<link rel="stylesheet" href="/static/css/guide.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span class="topbar__hamburger">☰</span> Устройства</div>
+  <nav class="topbar__tabs">
+    <a href="/">Список устройств</a>
+    <a href="/how-to-find-ip" class="is-active">Как узнать IP-адрес</a>
+  </nav>
+</header>
+
+<main class="guide">
+  <h1 class="guide__title">Как узнать IP-адрес устройства HikVision</h1>
+  <p class="guide__intro">
+    Чтобы добавить устройство контроля доступа в Verifix, понадобится его IP-адрес
+    в локальной сети. Он смотрится прямо на экране самого устройства — вот как его найти.
+  </p>
+
+  <div class="guide__branch-note">
+    <b>Сначала определите, как устройство подключено к сети:</b>
+    по Wi-Fi или по LAN-кабелю (Ethernet). Дальше почти всё одинаково —
+    разница только в одном шаге (№3).
+  </div>
+
+  <ol class="steps">
+    <li class="step">
+      <div class="step__text">
+        <h2>1. Войдите в меню администратора</h2>
+        <p>На экране устройства введите пароль администратора — тот, что был задан
+        при первичной настройке устройства.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>2. Откройте раздел «Связь»</h2>
+        <p>В главном меню устройства найдите иконку <b>«Связь»</b> (значок роутера)
+        и нажмите на неё.</p>
+      </div>
+      <img class="step__img" src="/static/img/step2-menu.png" alt="Главное меню устройства, иконка «Связь»" />
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>3. Выберите тип подключения</h2>
+        <p>Откроется экран <b>«Обмен данными»</b> со списком: Проводная сеть, Wi-Fi,
+        RS-485, ISUP, Hik-Connect.</p>
+        <ul class="branch-list">
+          <li>Устройство подключено по кабелю (LAN) — нажмите <b>«Проводная сеть»</b>.</li>
+          <li>Устройство подключено по Wi-Fi — нажмите <b>«Wi-Fi»</b> и переходите к шагу 4.</li>
+        </ul>
+        <p class="note">Если выбрали «Проводная сеть» — шаг 4 пропускается, экран с
+        параметрами (шаг 5) откроется сразу.</p>
+      </div>
+      <img class="step__img" src="/static/img/step3-obmen-dannymi.png" alt="Экран «Обмен данными» со списком типов подключения" />
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>4. Только для Wi-Fi: выберите текущую сеть</h2>
+        <p>В списке сетей найдите ту, что отмечена <b>галочкой</b> слева от названия —
+        это значит, что устройство сейчас подключено именно к ней. Нажмите на неё.</p>
+      </div>
+      <img class="step__img" src="/static/img/step4-wifi-list.png" alt="Список Wi-Fi сетей, галочка у подключённой сети" />
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>5. Посмотрите IP-адрес</h2>
+        <p>Откроется экран с параметрами сети. Нужное значение — в строке
+        <b>«IP-адрес»</b>. Рядом же — маска подсети, шлюз по умолчанию и DNS,
+        если понадобятся для более тонкой настройки.</p>
+      </div>
+      <img class="step__img" src="/static/img/step5-ip-address.png" alt="Экран параметров сети с полем IP-адрес" />
+    </li>
+  </ol>
+
+  <div class="guide__footer-note">
+    Скриншоты — реальные экраны устройства HikVision, снятые для этой инструкции.
+    Конкретные значения IP-адреса, маски и шлюза у вашего устройства будут другими —
+    ориентируйтесь на названия полей, не на цифры на этих иллюстрациях.
+  </div>
+</main>
+
+</body>
+</html>
