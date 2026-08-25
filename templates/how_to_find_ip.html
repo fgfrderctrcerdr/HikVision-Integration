@@ -36,6 +36,15 @@
         <p>На экране устройства введите пароль администратора — тот, что был задан
         при первичной настройке устройства.</p>
       </div>
+      <div class="device-mock">
+        <div class="device-mock__header">Введите пароль</div>
+        <div class="password-mock">
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-cursor"></span>
+        </div>
+      </div>
     </li>
 
     <li class="step">
@@ -44,7 +53,19 @@
         <p>В главном меню устройства найдите иконку <b>«Связь»</b> (значок роутера)
         и нажмите на неё.</p>
       </div>
-      <img class="step__img" src="/static/img/step2-menu.png" alt="Главное меню устройства, иконка «Связь»" />
+      <div class="device-mock">
+        <div class="device-mock__header">Меню</div>
+        <div class="menu-grid">
+          <div class="menu-tile"><span class="menu-tile__icon">👤</span><span>Пользователь</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">🔒</span><span>ACS</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">🕐</span><span>Рабочее время</span></div>
+          <div class="menu-tile menu-tile--target"><span class="tap-indicator"></span><span class="menu-tile__icon">📶</span><span>Связь</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">⚙️</span><span>Базовые</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">👁️</span><span>Биометрия</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">📊</span><span>Данные</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">🔧</span><span>Обслуж.</span></div>
+        </div>
+      </div>
     </li>
 
     <li class="step">
@@ -59,7 +80,16 @@
         <p class="note">Если выбрали «Проводная сеть» — шаг 4 пропускается, экран с
         параметрами (шаг 5) откроется сразу.</p>
       </div>
-      <img class="step__img" src="/static/img/step3-obmen-dannymi.png" alt="Экран «Обмен данными» со списком типов подключения" />
+      <div class="device-mock">
+        <div class="device-mock__header">‹ Обмен данными</div>
+        <div class="settings-list">
+          <div class="settings-row settings-row--branch-a">Проводная сеть <span class="branch-tag branch-tag--a">если LAN</span></div>
+          <div class="settings-row settings-row--branch-b">Wi-Fi <span class="branch-tag branch-tag--b">если Wi-Fi</span></div>
+          <div class="settings-row settings-row--dim">RS-485</div>
+          <div class="settings-row settings-row--dim">ISUP</div>
+          <div class="settings-row settings-row--dim">Hik-Connect</div>
+        </div>
+      </div>
     </li>
 
     <li class="step">
@@ -68,7 +98,20 @@
         <p>В списке сетей найдите ту, что отмечена <b>галочкой</b> слева от названия —
         это значит, что устройство сейчас подключено именно к ней. Нажмите на неё.</p>
       </div>
-      <img class="step__img" src="/static/img/step4-wifi-list.png" alt="Список Wi-Fi сетей, галочка у подключённой сети" />
+      <div class="device-mock">
+        <div class="device-mock__header">‹ Wi-Fi</div>
+        <div class="settings-list">
+          <div class="settings-row settings-row--target">
+            <span class="row-label">
+              <span class="tap-indicator tap-indicator--row"></span>
+              <span class="check-mark">✓</span> Verifix_2.4
+            </span>
+          </div>
+          <div class="settings-row settings-row--dim">banerma</div>
+          <div class="settings-row settings-row--dim">Promomed_UZ</div>
+          <div class="settings-row settings-row--dim">IZZY</div>
+        </div>
+      </div>
     </li>
 
     <li class="step">
@@ -78,14 +121,33 @@
         <b>«IP-адрес»</b>. Рядом же — маска подсети, шлюз по умолчанию и DNS,
         если понадобятся для более тонкой настройки.</p>
       </div>
-      <img class="step__img" src="/static/img/step5-ip-address.png" alt="Экран параметров сети с полем IP-адрес" />
+      <div class="device-mock">
+        <div class="device-mock__header">‹ Verifix_2.4</div>
+        <div class="settings-list">
+          <div class="settings-row settings-row--dim">DHCP <span class="value">Вкл</span></div>
+          <div class="settings-row settings-row--glow">IP-адрес <span class="value">192.168.11.99</span></div>
+          <div class="settings-row settings-row--dim">Маска подсети <span class="value">255.255.255.0</span></div>
+          <div class="settings-row settings-row--dim">Шлюз по умолч. <span class="value">192.168.11.1</span></div>
+        </div>
+      </div>
     </li>
   </ol>
 
+  <div class="video-section">
+    <h2 class="video-section__title">Видео-пример</h2>
+    <p class="video-section__note">Реальная запись экрана устройства — если анимации выше недостаточно,
+    посмотрите, как это выглядит на самом устройстве.</p>
+    <video class="video-section__player" controls preload="metadata">
+      <source src="/static/video-example.mp4" type="video/mp4" />
+      Ваш браузер не поддерживает встроенное видео — <a href="/static/video-example.mp4">скачайте файл</a>.
+    </video>
+  </div>
+
   <div class="guide__footer-note">
-    Скриншоты — реальные экраны устройства HikVision, снятые для этой инструкции.
-    Конкретные значения IP-адреса, маски и шлюза у вашего устройства будут другими —
-    ориентируйтесь на названия полей, не на цифры на этих иллюстрациях.
+    Анимации выше — схематичные, показывают ТОЛЬКО куда нажимать и в каком порядке.
+    Точный вид экрана вашего устройства (цвета, расположение иконок) может немного отличаться —
+    ориентируйтесь на названия пунктов, они одинаковы во всех моделях с такой админ-панелью.
+    Конкретные значения IP-адреса, маски и шлюза у вашего устройства будут другими.
   </div>
 </main>
 

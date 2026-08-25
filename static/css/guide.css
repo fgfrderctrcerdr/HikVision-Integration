@@ -44,6 +44,115 @@ body { margin: 0; background: var(--bg); color: var(--text); }
   border-radius: 10px; border: 1px solid var(--border);
 }
 
+/* ============================================================
+   Анимированные макеты экрана устройства (по запросу — вместо
+   статичных скринов). Тёмно-синий корпус имитирует реальное
+   устройство HikVision; акцентный цвет "нажмите здесь" — янтарный
+   (#f97316), контрастный на тёмном фоне, интуитивно читается как
+   "действие" независимо от остальной палитры.
+   ============================================================ */
+.device-mock {
+  width: 280px; margin: 18px auto 0; background: #10131c; border-radius: 22px;
+  border: 7px solid #1c2333; padding: 14px 12px 18px; position: relative;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+}
+.device-mock__header {
+  color: #fff; text-align: center; font-size: 12.5px; font-weight: 600; margin-bottom: 12px;
+}
+
+/* --- Шаг 1: ввод пароля --- */
+.password-mock { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 22px 0; }
+.password-dot { width: 12px; height: 12px; border-radius: 50%; background: #2a3040; }
+.password-dot.is-filled { background: #f97316; }
+.password-cursor { width: 2px; height: 16px; background: #fff; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* --- Шаг 2: сетка меню --- */
+.menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.menu-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 9px; color: #cbd5e1; position: relative; padding: 6px 2px;
+}
+.menu-tile__icon {
+  width: 30px; height: 30px; border-radius: 8px; background: #2563eb;
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+}
+.menu-tile--target { color: #fff; font-weight: 600; }
+
+/* --- Пульсирующая подсказка "нажмите здесь" — переиспользуется на нескольких шагах --- */
+.tap-indicator {
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  width: 30px; height: 30px; border-radius: 50%; background: rgba(249,115,22,0.55);
+  animation: tap-pulse 1.6s ease-out infinite; pointer-events: none; z-index: 1;
+}
+.tap-indicator::after {
+  content: ''; position: absolute; inset: 9px; border-radius: 50%; background: #f97316;
+}
+@keyframes tap-pulse {
+  0% { transform: translateX(-50%) scale(0.6); opacity: 0.9; }
+  70%, 100% { transform: translateX(-50%) scale(2); opacity: 0; }
+}
+.tap-indicator--row {
+  position: relative; display: inline-block; width: 16px; height: 16px;
+  margin-right: 8px; vertical-align: middle; flex: none; transform: none;
+}
+.tap-indicator--row::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; background: #f97316; z-index: 1;
+}
+.tap-indicator--row::after {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%; background: rgba(249,115,22,0.5);
+  animation: tap-pulse-row 1.6s ease-out infinite;
+}
+@keyframes tap-pulse-row {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* --- Шаги 3-5: списки настроек --- */
+.settings-list { display: flex; flex-direction: column; }
+.settings-row {
+  color: #e2e8f0; font-size: 12px; padding: 11px 6px; border-bottom: 1px solid #232a3d;
+  display: flex; align-items: center; justify-content: space-between; position: relative;
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-row--dim { color: #64748b; }
+.settings-row .value { color: #93c5fd; font-size: 11px; }
+.row-label { display: flex; align-items: center; }
+.check-mark { color: #22c55e; font-weight: 700; margin-right: 4px; }
+
+/* Шаг 3 — ветвление: два варианта поочерёдно "загораются", показывая
+   "это ОДИН из двух, в зависимости от вашего случая", не одновременный тап. */
+.branch-tag {
+  font-size: 9.5px; padding: 2px 7px; border-radius: 999px; font-weight: 600;
+}
+.branch-tag--a { background: rgba(249,115,22,0.18); color: #fdba74; }
+.branch-tag--b { background: rgba(249,115,22,0.18); color: #fdba74; }
+.settings-row--branch-a { animation: alt-glow-a 4s ease-in-out infinite; border-radius: 8px; }
+.settings-row--branch-b { animation: alt-glow-b 4s ease-in-out infinite; border-radius: 8px; }
+@keyframes alt-glow-a {
+  0%, 40% { background: rgba(249,115,22,0.16); }
+  50%, 100% { background: transparent; }
+}
+@keyframes alt-glow-b {
+  0%, 40% { background: transparent; }
+  50%, 90% { background: rgba(249,115,22,0.16); }
+  100% { background: transparent; }
+}
+
+/* Шаг 5 — тут не "нажать", а "посмотреть": мягкое пульсирующее свечение
+   всей строки, без ripple-индикатора (там нечего тапать, только читать). */
+.settings-row--glow { border-radius: 8px; animation: row-glow 1.8s ease-in-out infinite; font-weight: 600; color: #fff; }
+@keyframes row-glow {
+  0%, 100% { background: rgba(249,115,22,0.10); }
+  50% { background: rgba(249,115,22,0.28); }
+}
+
+/* --- Видео-пример --- */
+.video-section { margin: 32px 0; }
+.video-section__title { font-size: 18px; margin: 0 0 6px; }
+.video-section__note { font-size: 13.5px; color: var(--text-muted); margin: 0 0 14px; }
+.video-section__player { width: 100%; max-width: 320px; display: block; margin: 0 auto; border-radius: 12px; background: #000; }
+
 .guide__footer-note {
   font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 32px;
   padding-top: 20px; border-top: 1px solid var(--border);
