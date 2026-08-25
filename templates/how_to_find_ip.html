@@ -33,16 +33,25 @@
     <li class="step">
       <div class="step__text">
         <h2>1. Войдите в меню администратора</h2>
-        <p>На экране устройства введите пароль администратора — тот, что был задан
-        при первичной настройке устройства.</p>
+        <p>Сначала проведите пальцем по экрану устройства (влево-вправо), чтобы
+        разблокировать его. Затем введите пароль администратора — тот, что был
+        задан при первичной настройке устройства.</p>
       </div>
       <div class="device-mock">
-        <div class="device-mock__header">Введите пароль</div>
-        <div class="password-mock">
-          <span class="password-dot is-filled"></span>
-          <span class="password-dot is-filled"></span>
-          <span class="password-dot is-filled"></span>
-          <span class="password-cursor"></span>
+        <div class="scud-screen">
+          <div class="scud-phase scud-phase--lock">
+            <div class="swipe-hint">Проведите по экрану</div>
+            <div class="swipe-track"><div class="swipe-dot"></div></div>
+          </div>
+          <div class="scud-phase scud-phase--password">
+            <div class="device-mock__header">Введите пароль</div>
+            <div class="password-mock">
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-cursor"></span>
+            </div>
+          </div>
         </div>
       </div>
     </li>
