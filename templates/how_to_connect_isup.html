@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Как подключить устройство через ISUP — Verifix</title>
+<link rel="stylesheet" href="/static/css/guide.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span class="topbar__hamburger">☰</span> Устройства</div>
+  <nav class="topbar__tabs">
+    <a href="/">Список устройств</a>
+    <a href="/how-to-find-ip">Вариант A: по IP-адресу</a>
+    <a href="/how-to-connect-isup" class="is-active">Вариант Б: через ISUP</a>
+  </nav>
+</header>
+
+<main class="guide">
+  <h1 class="guide__title">Как подключить устройство к Verifix через ISUP</h1>
+  <p class="guide__intro">
+    Не нужно искать IP-адрес устройства в локальной сети и настраивать доступ к нему
+    извне — устройство само регистрируется на сервере Verifix по протоколу ISUP.
+    От вас нужно только один раз ввести параметры на самом устройстве.
+  </p>
+
+  <div class="guide__branch-note">
+    <b>Перед началом уточните у своего менеджера Verifix:</b> адрес и порт
+    ISUP-сервера — это фиксированные значения, одинаковые для всех устройств
+    Verifix, искать их самостоятельно не нужно (см. шаг 4).
+  </div>
+
+  <ol class="steps">
+    <li class="step">
+      <div class="step__text">
+        <h2>1. Войдите в меню администратора</h2>
+        <p>Сначала проведите пальцем по экрану устройства (влево-вправо), чтобы
+        разблокировать его. Затем введите пароль администратора — тот, что был
+        задан при первичной настройке устройства.</p>
+      </div>
+      <div class="device-mock">
+        <div class="scud-screen">
+          <div class="scud-phase scud-phase--lock">
+            <div class="swipe-hint">Проведите по экрану</div>
+            <div class="swipe-track"><div class="swipe-dot"></div></div>
+          </div>
+          <div class="scud-phase scud-phase--password">
+            <div class="device-mock__header">Введите пароль</div>
+            <div class="password-mock">
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>2. Откройте раздел «Связь»</h2>
+        <p>В главном меню устройства найдите иконку <b>«Связь»</b> (значок роутера)
+        и нажмите на неё.</p>
+      </div>
+      <div class="device-mock">
+        <div class="device-mock__header">Меню</div>
+        <div class="menu-grid">
+          <div class="menu-tile"><span class="menu-tile__icon">👤</span><span>Пользователь</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">🔒</span><span>ACS</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">🕐</span><span>Рабочее время</span></div>
+          <div class="menu-tile menu-tile--target"><span class="tap-indicator"></span><span class="menu-tile__icon">📶</span><span>Связь</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">⚙️</span><span>Базовые</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">👁️</span><span>Биометрия</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">📊</span><span>Данные</span></div>
+          <div class="menu-tile"><span class="menu-tile__icon">🔧</span><span>Обслуж.</span></div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>3. Выберите «ISUP»</h2>
+        <p>Откроется экран <b>«Обмен данными»</b> со списком: Проводная сеть, Wi-Fi,
+        RS-485, ISUP, Hik-Connect. Нажмите <b>«ISUP»</b> — здесь регистрация на
+        сервере Verifix, локальная сеть устройства не важна.</p>
+      </div>
+      <div class="device-mock">
+        <div class="device-mock__header">‹ Обмен данными</div>
+        <div class="settings-list">
+          <div class="settings-row settings-row--dim">Проводная сеть</div>
+          <div class="settings-row settings-row--dim">Wi-Fi</div>
+          <div class="settings-row settings-row--dim">RS-485</div>
+          <div class="settings-row settings-row--target">
+            <span class="row-label"><span class="tap-indicator tap-indicator--row"></span>ISUP</span>
+          </div>
+          <div class="settings-row settings-row--dim">Hik-Connect</div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>4. Включите ISUP и укажите адрес сервера</h2>
+        <p>Переключите <b>«ISUP»</b> во включённое состояние, тип адреса оставьте
+        <b>«IP»</b>, затем введите IP-адрес и номер порта сервера ISUP.</p>
+        <p class="note">Эти два значения даёт Verifix при подключении вашей
+        компании — не нужно искать их самостоятельно, это не адрес самого
+        устройства.</p>
+      </div>
+      <div class="device-mock">
+        <div class="device-mock__header">‹ ISUP</div>
+        <div class="settings-list">
+          <div class="settings-row settings-row--dim">Основной канал <span class="value">N1</span></div>
+          <div class="settings-row">ISUP <span class="toggle-pill toggle-pill--on"></span></div>
+          <div class="settings-group">
+            <span class="settings-group__badge">от Verifix</span>
+            <div class="settings-row settings-row--dim" style="border-bottom:none;">Тип адреса <span class="value">IP</span></div>
+            <div class="settings-row settings-row--glow">IP <span class="value">49.13.32.149</span></div>
+            <div class="settings-row settings-row--glow" style="border-bottom:none;">Номер порта <span class="value">6368</span></div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>5. Придумайте ID устройства</h2>
+        <p>Свободный идентификатор — от 1 до 32 символов, задаёте сами. Удобно
+        называть по точке или клиенту, чтобы потом не перепутать устройства
+        в списке, например <code>office-entrance-1</code>.</p>
+        <p class="note">Этот же ID нужно будет указать при добавлении
+        устройства в самой Verifix — запишите его.</p>
+      </div>
+      <div class="device-mock">
+        <div class="device-mock__header">‹ ISUP</div>
+        <div class="settings-list">
+          <div class="settings-row settings-row--dim">Тип адреса <span class="value">IP</span></div>
+          <div class="settings-row settings-row--dim">IP <span class="value">49.13.32.149</span></div>
+          <div class="settings-row settings-row--dim">Номер порта <span class="value">6368</span></div>
+          <div class="settings-row settings-row--target">
+            <span class="row-label"><span class="tap-indicator tap-indicator--row"></span>ID устройства</span>
+            <span class="value">integratioqwqw1</span>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>6. Введите ключ ISUP</h2>
+        <p>Секретный ключ — от 8 до 16 символов, тоже задаёте сами (или получаете
+        от Verifix вместе с адресом сервера — уточните у менеджера, как принято
+        у вас). Поле маскируется при вводе, как пароль.</p>
+        <p class="note">Ключ вместе с ID устройства понадобится при регистрации
+        устройства в Verifix — сохраните оба значения в одном месте.</p>
+      </div>
+      <div class="device-mock">
+        <div class="device-mock__header">Введите ключ ISUP</div>
+        <div class="password-mock">
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-dot is-filled"></span>
+          <span class="password-cursor"></span>
+        </div>
+      </div>
+    </li>
+  </ol>
+
+  <div class="video-section">
+    <h2 class="video-section__title">Видео-пример</h2>
+    <p class="video-section__note">Реальная запись экрана устройства — если анимации выше недостаточно,
+    посмотрите, как это выглядит на самом устройстве.</p>
+    <video class="video-section__player" controls preload="metadata">
+      <source src="/static/video-isup-example.mp4" type="video/mp4" />
+      Ваш браузер не поддерживает встроенное видео — <a href="/static/video-isup-example.mp4">скачайте файл</a>.
+    </video>
+  </div>
+
+  <div class="guide__footer-note">
+    Анимации выше — схематичные, показывают ТОЛЬКО куда нажимать и в каком порядке.
+    Значения IP-адреса, порта, ID и ключа на иллюстрациях — из тестовой записи,
+    у вас будут свои. Регистрация устройства на стороне самой Verifix (ввод того же
+    ID и ключа в веб-панели) — отдельный шаг, здесь не показан.
+  </div>
+</main>
+
+</body>
+</html>

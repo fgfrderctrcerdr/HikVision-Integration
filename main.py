@@ -74,4 +74,9 @@ def how_to_find_ip_page(request: Request):
     return templates.TemplateResponse(request, "how_to_find_ip.html", {})
 
 
+@app.get("/how-to-connect-isup")
+def how_to_connect_isup_page(request: Request):
+    return templates.TemplateResponse(request, "how_to_connect_isup.html", {})
+
+
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
