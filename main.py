@@ -79,4 +79,14 @@ def how_to_connect_isup_page(request: Request):
     return templates.TemplateResponse(request, "how_to_connect_isup.html", {})
 
 
+@app.get("/device-create")
+def device_create_page(request: Request):
+    """Форма создания устройства — повторяет реальную форму Verifix
+    (см. референс-скрины Vladimir). ?tour=1 запускает гид поверх
+    настоящих полей формы (см. static/js/device-tour.js) — ссылку с
+    этим параметром ставит devices.html после клика по кнопке
+    "Создать" внутри гида на списке устройств."""
+    return templates.TemplateResponse(request, "device_create.html", {})
+
+
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")

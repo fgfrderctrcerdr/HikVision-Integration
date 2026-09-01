@@ -13,6 +13,7 @@
   <nav class="topbar__tabs">
     <a href="#" class="topbar__tab is-active">Новые устройства</a>
     <a href="#" class="topbar__tab">Состояние сотрудников по устройствам</a>
+    <button type="button" class="topbar__tab topbar__tab--hikvision-cta" id="startHikvisionTour">Интеграция с HikVision</button>
     <a href="/how-to-find-ip" class="topbar__tab topbar__tab--guide">Вариант A: по IP-адресу</a>
     <a href="/how-to-connect-isup" class="topbar__tab topbar__tab--guide2">Вариант Б: через ISUP →</a>
   </nav>
@@ -24,7 +25,7 @@
 
 <div class="toolbar">
   <div class="toolbar__left">
-    <button class="btn btn--create">СОЗДАТЬ <span class="btn__caret">▾</span></button>
+    <button class="btn btn--create" id="createDeviceBtn">СОЗДАТЬ <span class="btn__caret">▾</span></button>
   </div>
   <div class="toolbar__right">
     <input type="text" class="search-input" placeholder="Поиск..." />
@@ -107,6 +108,43 @@
 </div>
 
 <footer class="page-footer">Copyright © 2020-2026, Verifix. Мок-концепт для инструкции по интеграции с HikVision — не боевые данные.</footer>
+
+<div class="tour-dim" id="tourDim"></div>
+<div class="tour-card" id="tourCard">
+  <div class="tour-card__step">Шаг 1 из 1 на этой странице</div>
+  <div class="tour-card__title">Нажмите «Создать»</div>
+  <div class="tour-card__text">Форма создания устройства откроется с подсказками — заполним поля вместе, шаг за шагом.</div>
+</div>
+
+<script>
+(function () {
+  var startBtn = document.getElementById('startHikvisionTour');
+  var createBtn = document.getElementById('createDeviceBtn');
+  var dim = document.getElementById('tourDim');
+  var card = document.getElementById('tourCard');
+
+  function positionCard() {
+    var r = createBtn.getBoundingClientRect();
+    card.style.top = (r.bottom + 12) + 'px';
+    card.style.left = r.left + 'px';
+  }
+
+  startBtn.addEventListener('click', function () {
+    createBtn.classList.add('tour-highlight');
+    dim.classList.add('is-visible');
+    positionCard();
+    card.classList.add('is-visible');
+  });
+
+  window.addEventListener('resize', function () {
+    if (card.classList.contains('is-visible')) positionCard();
+  });
+
+  createBtn.addEventListener('click', function () {
+    window.location.href = '/device-create?tour=1';
+  });
+})();
+</script>
 
 </body>
 </html>

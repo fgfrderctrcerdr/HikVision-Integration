@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Устройство (создание) — Verifix</title>
+<link rel="stylesheet" href="/static/css/form.css" />
+<link rel="stylesheet" href="/static/css/guide.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span>☰</span> Устройство (создание)</div>
+</header>
+
+<div class="form-toolbar">
+  <button class="btn btn--primary">СОХРАНИТЬ</button>
+  <button class="btn btn--primary">СОХРАНИТЬ И СИНХРОНИЗИРОВАТЬ</button>
+  <a href="/" class="btn btn--ghost" style="text-decoration:none;display:inline-flex;align-items:center;">ЗАКРЫТЬ</a>
+</div>
+
+<div class="form-layout">
+  <div class="form-col" id="colLeft">
+    <div class="field" id="fieldDeviceType">
+      <label>Тип устройства</label>
+      <div class="radio-row">
+        <label><input type="radio" name="deviceType" value="timepad" checked /> Verifix Timepad</label>
+        <label><input type="radio" name="deviceType" value="zkteco" /> ZKTeco</label>
+        <label><input type="radio" name="deviceType" value="hikvision" /> Hikvision</label>
+        <label><input type="radio" name="deviceType" value="dahua" /> Dahua</label>
+      </div>
+    </div>
+
+    <div class="field" id="fieldName">
+      <label>Название <span class="required">*</span></label>
+      <input type="text" id="inputName" />
+    </div>
+
+    <div class="field" id="fieldLocation">
+      <label>Локация <span class="required">*</span></label>
+      <input type="search" id="inputLocation" placeholder="Поиск..." />
+    </div>
+
+    <div class="field" id="fieldSerial">
+      <label>Серийный номер <span class="required">*</span></label>
+      <input type="text" id="inputSerial" />
+    </div>
+
+    <div class="field" id="fieldModel" style="display:none;">
+      <label>Модель устройства</label>
+      <input type="search" placeholder="Поиск..." />
+    </div>
+
+    <div class="field" id="fieldAdmins">
+      <label>Администраторы</label>
+      <input type="search" placeholder="Поиск..." />
+    </div>
+
+    <div class="toggle-field" id="fieldUseMain">
+      <span class="toggle-field__label">Использовать основные настройки для этапов и типов трекинга</span>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" checked /><span class="switch__track"></span></label>
+        <span class="toggle-field__text">да</span>
+      </span>
+    </div>
+
+    <div class="toggle-field">
+      <span class="toggle-field__label">Игнорировать фотографии с этого устройства</span>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" /><span class="switch__track"></span></label>
+        <span class="toggle-field__text">нет</span>
+      </span>
+    </div>
+
+    <div class="field" style="margin-bottom:0;">
+      <label style="margin-bottom:8px;">Статус</label>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" checked /><span class="switch__track"></span></label>
+        <span class="toggle-field__text">Активный</span>
+      </span>
+    </div>
+
+    <div id="timepadAppBlock" style="margin-top:20px;">
+      <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:8px;">Скачайте приложение Verifix TimePad</label>
+      <div class="app-badge">
+        <div style="background:#000;color:#fff;border-radius:6px;padding:6px 10px;font-size:10px;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:16px;">▶</span>
+          <span>GET IT ON<br /><b style="font-size:12px;">Google Play</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-col" id="colRight">
+    <div class="toggle-field">
+      <span class="toggle-field__label">Игнорировать отметки с устройства</span>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" /><span class="switch__track"></span></label>
+        <span class="toggle-field__text">нет</span>
+      </span>
+    </div>
+
+    <div class="toggle-field">
+      <span class="toggle-field__label">Недействительные отметки</span>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" /><span class="switch__track"></span></label>
+        <span class="toggle-field__text">нет</span>
+      </span>
+    </div>
+
+    <div class="toggle-field">
+      <span class="toggle-field__label">Отправлять только один тип трекинга с устройства</span>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" id="toggleSingleKind" /><span class="switch__track"></span></label>
+        <span class="toggle-field__text" id="toggleSingleKindText">нет</span>
+      </span>
+    </div>
+
+    <div class="sub-radio" id="singleKindRadio" style="display:none;">
+      <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:8px;">Типы трекинга</label>
+      <div class="radio-row">
+        <label><input type="radio" name="trackKind" value="in" /> Приход</label>
+        <label><input type="radio" name="trackKind" value="out" /> Уход</label>
+        <label><input type="radio" name="trackKind" value="mark" /> Отметка</label>
+      </div>
+    </div>
+
+    <div id="globalToggleBlock">
+      <div class="toggle-field">
+        <span class="toggle-field__label">Использовать глобальные настройки прихода</span>
+        <span class="toggle-field__control">
+          <label class="switch"><input type="checkbox" id="toggleGlobalIn" checked /><span class="switch__track"></span></label>
+          <span class="toggle-field__text" id="toggleGlobalInText">да</span>
+        </span>
+      </div>
+      <div class="sub-radio" id="inRadio" style="display:none;">
+        <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:6px;">Приход</label>
+        <div class="radio-row">
+          <label><input type="radio" name="inRule" value="first" /> Первая отметка</label>
+          <label><input type="radio" name="inRule" value="last" /> Последняя отметка</label>
+        </div>
+        <p class="sub-radio__hint">Первая отметка прихода будет учитываться как приход</p>
+      </div>
+
+      <div class="toggle-field">
+        <span class="toggle-field__label">Использовать глобальные настройки ухода</span>
+        <span class="toggle-field__control">
+          <label class="switch"><input type="checkbox" id="toggleGlobalOut" checked /><span class="switch__track"></span></label>
+          <span class="toggle-field__text" id="toggleGlobalOutText">да</span>
+        </span>
+      </div>
+      <div class="sub-radio" id="outRadio" style="display:none;">
+        <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:6px;">Уход</label>
+        <div class="radio-row">
+          <label><input type="radio" name="outRule" value="first" /> Первая отметка</label>
+          <label><input type="radio" name="outRule" value="last" /> Последняя отметка</label>
+        </div>
+        <p class="sub-radio__hint">Первая отметка ухода будет учитываться как уход</p>
+      </div>
+    </div>
+
+    <div class="field" id="fieldKind">
+      <label style="margin-bottom:8px;">Тип авто-генерации</label>
+      <div class="checkbox-row">
+        <label><input type="checkbox" id="autoIn" /> Авто-генерация приходов</label>
+        <label><input type="checkbox" id="autoOut" /> Авто-генерация уходов</label>
+      </div>
+    </div>
+
+    <div class="toggle-field" style="margin-bottom:0;">
+      <span class="toggle-field__label">Периодическая перезагрузка устройства</span>
+      <span class="toggle-field__control">
+        <label class="switch"><input type="checkbox" /><span class="switch__track"></span></label>
+        <span class="toggle-field__text">нет</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Вопрос "приходы/уходы/оба" — раскрывается после того, как обязательные поля заполнены -->
+<div class="form-layout" style="padding-top:0;" id="kindQuestionWrap">
+  <div class="kind-question" id="kindQuestion" style="display:none;width:100%;">
+    <p class="kind-question__title">Данная камера принимает только приходы, только уходы, или и то и то?</p>
+    <div class="kind-question__options" id="kindQuestionOptions">
+      <button type="button" class="kind-question__btn" data-answer="in">Приходы</button>
+      <button type="button" class="kind-question__btn" data-answer="out">Уходы</button>
+      <button type="button" class="kind-question__btn" data-answer="both">Приходы и Уходы</button>
+    </div>
+    <p class="kind-question__answered" id="kindQuestionAnswered" style="display:none;"></p>
+  </div>
+</div>
+
+<!-- Мини-гид "как достать серийный номер" -->
+<div class="serial-guide">
+  <div class="serial-guide__box" id="serialGuideBox">
+    <h2 class="serial-guide__title">Как узнать серийный номер устройства</h2>
+    <p class="serial-guide__intro">Два шага: сначала найдите IP-адрес устройства на самом устройстве,
+    потом откройте по этому адресу веб-панель устройства в браузере — там серийный номер виден в настройках.</p>
+
+    <div class="serial-tabs">
+      <button type="button" class="serial-tab is-active" data-tab="tab1">Шаг 1 · На самом устройстве</button>
+      <button type="button" class="serial-tab" data-tab="tab2">Шаг 2 · В браузере</button>
+    </div>
+
+    <div class="serial-panel is-active" id="tab1">
+      <ol class="steps">
+        <li class="step">
+          <div class="step__text">
+            <h2>1. Войдите в меню администратора</h2>
+            <p>Сначала проведите пальцем по экрану устройства (влево-вправо), чтобы
+            разблокировать его. Затем введите пароль администратора — тот, что был
+            задан при первичной настройке устройства.</p>
+          </div>
+          <div class="device-mock">
+            <div class="scud-screen">
+              <div class="scud-phase scud-phase--lock">
+                <div class="swipe-hint">Проведите по экрану</div>
+                <div class="swipe-track"><div class="swipe-dot"></div></div>
+              </div>
+              <div class="scud-phase scud-phase--password">
+                <div class="device-mock__header">Введите пароль</div>
+                <div class="password-mock">
+                  <span class="password-dot is-filled"></span>
+                  <span class="password-dot is-filled"></span>
+                  <span class="password-dot is-filled"></span>
+                  <span class="password-cursor"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>2. Откройте раздел «Связь»</h2>
+            <p>В главном меню устройства найдите иконку <b>«Связь»</b> (значок роутера)
+            и нажмите на неё.</p>
+          </div>
+          <div class="device-mock">
+            <div class="device-mock__header">Меню</div>
+            <div class="menu-grid">
+              <div class="menu-tile"><span class="menu-tile__icon">👤</span><span>Пользователь</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">🔒</span><span>ACS</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">🕐</span><span>Рабочее время</span></div>
+              <div class="menu-tile menu-tile--target"><span class="tap-indicator"></span><span class="menu-tile__icon">📶</span><span>Связь</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">⚙️</span><span>Базовые</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">👁️</span><span>Биометрия</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">📊</span><span>Данные</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">🔧</span><span>Обслуж.</span></div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>3. Выберите тип подключения</h2>
+            <p>Откроется экран <b>«Обмен данными»</b> со списком: Проводная сеть, Wi-Fi,
+            RS-485, ISUP, Hik-Connect.</p>
+            <ul class="branch-list">
+              <li>Устройство подключено по кабелю (LAN) — нажмите <b>«Проводная сеть»</b>.</li>
+              <li>Устройство подключено по Wi-Fi — нажмите <b>«Wi-Fi»</b> и переходите к шагу 4.</li>
+            </ul>
+            <p class="note">Если выбрали «Проводная сеть» — шаг 4 пропускается, экран с
+            параметрами (шаг 5) откроется сразу.</p>
+          </div>
+          <div class="device-mock">
+            <div class="device-mock__header">‹ Обмен данными</div>
+            <div class="settings-list">
+              <div class="settings-row settings-row--branch-a">Проводная сеть <span class="branch-tag branch-tag--a">если LAN</span></div>
+              <div class="settings-row settings-row--branch-b">Wi-Fi <span class="branch-tag branch-tag--b">если Wi-Fi</span></div>
+              <div class="settings-row settings-row--dim">RS-485</div>
+              <div class="settings-row settings-row--dim">ISUP</div>
+              <div class="settings-row settings-row--dim">Hik-Connect</div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>4. Только для Wi-Fi: выберите текущую сеть</h2>
+            <p>В списке сетей найдите ту, что отмечена <b>галочкой</b> слева от названия —
+            это значит, что устройство сейчас подключено именно к ней. Нажмите на неё.</p>
+          </div>
+          <div class="device-mock">
+            <div class="device-mock__header">‹ Wi-Fi</div>
+            <div class="settings-list">
+              <div class="settings-row settings-row--target">
+                <span class="row-label">
+                  <span class="tap-indicator tap-indicator--row"></span>
+                  <span class="check-mark">✓</span> Verifix_2.4
+                </span>
+              </div>
+              <div class="settings-row settings-row--dim">banerma</div>
+              <div class="settings-row settings-row--dim">Promomed_UZ</div>
+              <div class="settings-row settings-row--dim">IZZY</div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>5. Посмотрите IP-адрес</h2>
+            <p>Откроется экран с параметрами сети. Нужное значение — в строке
+            <b>«IP-адрес»</b>. Его понадобится ввести в браузере на шаге 2.</p>
+          </div>
+          <div class="device-mock">
+            <div class="device-mock__header">‹ Verifix_2.4</div>
+            <div class="settings-list">
+              <div class="settings-row settings-row--dim">DHCP <span class="value">Вкл</span></div>
+              <div class="settings-row settings-row--glow">IP-адрес <span class="value">192.168.11.99</span></div>
+              <div class="settings-row settings-row--dim">Маска подсети <span class="value">255.255.255.0</span></div>
+              <div class="settings-row settings-row--dim">Шлюз по умолч. <span class="value">192.168.11.1</span></div>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="serial-panel" id="tab2">
+      <ol class="steps">
+        <li class="step">
+          <div class="step__text">
+            <h2>1. Откройте IP-адрес устройства в браузере</h2>
+            <p>На любом компьютере в той же сети введите в адресную строку IP-адрес,
+            который вы нашли на шаге 1 (например, <code>192.168.11.64</code>).
+            Откроется страница входа в веб-панель устройства.</p>
+          </div>
+          <div class="browser-mock">
+            <div class="browser-mock__bar">
+              <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+              <div class="browser-mock__url">192.168.11.64</div>
+            </div>
+            <div class="browser-mock__body">
+              <div class="login-mock">
+                <div class="login-mock__logo">HIKVISION</div>
+                <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Добро пожаловать</div>
+                <div class="login-mock__field">admin</div>
+                <div class="login-mock__field">••••••••</div>
+                <div class="login-mock__btn">Вход<span class="mini-tap"></span></div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>2. Войдите под администратором</h2>
+            <p>Логин — обычно <code>admin</code>, пароль — тот же, что вы задавали на
+            самом устройстве при первичной настройке. Нажмите «Вход».</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>3. Откройте «Конфигурация» → «Система» → «Системные настройки»</h2>
+            <p>Слева — узкая колонка иконок, нажмите на значок шестерёнки
+            («Конфигурация»). В открывшемся меню — раздел <b>«Система»</b>,
+            в нём — <b>«Системные настройки»</b>.</p>
+          </div>
+          <div class="browser-mock">
+            <div class="browser-mock__bar">
+              <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+              <div class="browser-mock__url">192.168.11.64/doc/index.html#/config/system/systemSetting</div>
+            </div>
+            <div class="browser-mock__body">
+              <div class="admin-mock">
+                <div class="admin-mock__sidebar">
+                  <div class="admin-mock__icon">▤</div>
+                  <div class="admin-mock__icon">👤</div>
+                  <div class="admin-mock__icon">📋</div>
+                  <div class="admin-mock__icon is-target">⚙<span class="mini-tap"></span></div>
+                  <div class="admin-mock__icon">🖼</div>
+                </div>
+                <div class="admin-mock__menu">
+                  <div class="admin-mock__menu-group">Система</div>
+                  <div class="admin-mock__menu-item is-target">Системные настройки</div>
+                  <div class="admin-mock__menu-item">Управление пользо…</div>
+                  <div class="admin-mock__menu-group">Сеть</div>
+                  <div class="admin-mock__menu-item">Видео и Аудио</div>
+                  <div class="admin-mock__menu-item">Контроль доступа</div>
+                </div>
+                <div class="admin-mock__content">
+                  <div style="font-weight:700;margin-bottom:8px;">Базовая информация</div>
+                  <div class="admin-mock__row"><span>Имя устройства</span><span>Access Controller</span></div>
+                  <div class="admin-mock__row"><span>Модель</span><span>DS-K1T331</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>4. Посмотрите поле «Серийный номер»</h2>
+            <p>На вкладке <b>«Базовая информация»</b> (открывается по умолчанию) — строка
+            <b>«Серийный номер»</b>. Скопируйте значение и вставьте в поле формы Verifix.</p>
+          </div>
+          <div class="browser-mock">
+            <div class="browser-mock__bar">
+              <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+              <div class="browser-mock__url">192.168.11.64/doc/index.html#/config/system/systemSetting/basicInfo</div>
+            </div>
+            <div class="browser-mock__body">
+              <div class="admin-mock">
+                <div class="admin-mock__sidebar">
+                  <div class="admin-mock__icon">▤</div>
+                  <div class="admin-mock__icon">👤</div>
+                  <div class="admin-mock__icon">📋</div>
+                  <div class="admin-mock__icon" style="background:rgba(249,115,22,0.25);color:var(--accent);">⚙</div>
+                  <div class="admin-mock__icon">🖼</div>
+                </div>
+                <div class="admin-mock__menu">
+                  <div class="admin-mock__menu-group">Система</div>
+                  <div class="admin-mock__menu-item" style="background:#e5e7eb;color:#111827;font-weight:600;">Системные настройки</div>
+                  <div class="admin-mock__menu-item">Управление пользо…</div>
+                  <div class="admin-mock__menu-group">Сеть</div>
+                </div>
+                <div class="admin-mock__content">
+                  <div style="font-weight:700;margin-bottom:8px;">Базовая информация</div>
+                  <div class="admin-mock__row"><span>Имя устройства</span><span>Access Controller</span></div>
+                  <div class="admin-mock__row"><span>Модель</span><span>DS-K1T331</span></div>
+                  <div class="admin-mock__row is-target"><span>Серийный номер</span><span>DS-K1T331…9775543</span></div>
+                  <div class="admin-mock__row"><span>Версия прошивки</span><span>V3.7.0</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="serial-video">
+        <h3 class="serial-video__title">Видео-пример: вход в веб-панель и поиск серийного номера</h3>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-webpanel-example.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-webpanel-example.mp4">скачайте файл</a>.
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tour-dim" id="tourDim"></div>
+<div class="tour-card" id="tourCard">
+  <div class="tour-card__step" id="tourCardStep"></div>
+  <div class="tour-card__title" id="tourCardTitle"></div>
+  <div class="tour-card__text" id="tourCardText"></div>
+  <div class="tour-card__actions"><button type="button" class="tour-card__btn" id="tourCardNext">Понятно</button></div>
+</div>
+
+<script src="/static/js/device-tour.js"></script>
+</body>
+</html>
