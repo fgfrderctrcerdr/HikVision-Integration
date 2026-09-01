@@ -26,34 +26,13 @@ body { margin: 0; background: var(--bg); color: var(--text); font-size: 13.5px; 
 .topbar__tab.is-active { color: #fff; border-bottom-color: var(--teal); font-weight: 600; }
 .topbar__tab--guide { margin-left: auto; color: #94a3b8 !important; }
 .topbar__tab--guide2 { color: #5eead4 !important; }
-.topbar__tab--hikvision-cta {
-  background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.4); color: var(--teal) !important;
-  border-radius: 6px; padding: 4px 10px !important; font: inherit; cursor: pointer; margin-left: 6px;
+/* Кнопка "Интеграция с HikVision" — по фидбоку должна выглядеть точно
+   как соседние пункты навигации (не отдельная плашка-CTA). Так как это
+   <button>, а не <a>, сбрасываем нативные стили браузера отдельно. */
+button.topbar__tab {
+  background: none; border: none; border-bottom: 2px solid transparent; font: inherit; cursor: pointer;
 }
-.topbar__tab--hikvision-cta:hover { background: rgba(20,184,166,0.25); }
 
-/* ---- Гид поверх реальных элементов (подсветка + карточка) — тот же
-   принцип, что и в form.css на странице создания устройства ---- */
-.tour-dim {
-  position: fixed; inset: 0; background: rgba(15,18,25,0.55); z-index: 9990;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
-}
-.tour-dim.is-visible { opacity: 1; pointer-events: auto; }
-.tour-highlight {
-  position: relative; z-index: 9991; border-radius: 8px;
-  box-shadow: 0 0 0 4px rgba(249,115,22,0.35), 0 0 0 2px #f97316;
-  transition: box-shadow 0.2s ease;
-}
-.tour-card {
-  position: fixed; z-index: 9992; background: #1e2530; color: #fff; border-radius: 12px;
-  padding: 16px 18px; max-width: 320px; box-shadow: 0 16px 40px rgba(0,0,0,0.3);
-  opacity: 0; transform: translateY(6px); pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.tour-card.is-visible { opacity: 1; transform: translateY(0); }
-.tour-card__step { font-size: 10.5px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
-.tour-card__title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-.tour-card__text { font-size: 12.5px; line-height: 1.5; color: #cbd5e1; }
 .topbar__right { display: flex; gap: 6px; }
 .icon-btn {
   background: transparent; border: 1px solid transparent; color: inherit; cursor: pointer;

@@ -1,0 +1,64 @@
+/* ============================================================
+   Гид в стиле Mock-Stand (vtour-*) — по фидбеку: раньше был грубый
+   orange box-shadow прямо на элементе + сплошное затемнение поверх
+   z-index. Теперь — ТОЧНО тот же приём, что в Mock-Stand: кольцо и
+   "вырез"-затемнение — отдельные позиционируемые элементы (не сам
+   таргет), вырез через box-shadow 0 0 0 9999px (не полноэкранный div
+   поверх с z-index), настоящая SVG-стрелка с изогнутым путём.
+   ============================================================ */
+@keyframes vtour-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+#vtour-root { position: fixed; inset: 0; pointer-events: none; z-index: 99999; }
+/* ВАЖНО: раньше здесь было "#vtour-root > * { pointer-events: none; }" —
+   ID-селектор имеет более высокую специфичность, чем ЛЮБАЯ комбинация
+   классов (.vtour-card.is-visible), поэтому эта строка ПЕРЕБИВАЛА
+   pointer-events:auto у карточки несмотря на явное намерение — клик
+   визуально попадал в карточку, но фактически проходил НАСКВОЗЬ к
+   элементу страницы под ней (это и был баг: клик по "Понятно" уходил
+   в поле "Локация", которое просто оказалось на тех же координатах).
+   Теперь каждый элемент указывает pointer-events сам явно: кольцо и
+   вырез — none !important, карточка — auto только когда видима. */
+
+.vtour-highlight-ring {
+  position: fixed; border-radius: 8px; border: 2px solid #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.25);
+  transition: top 0.25s cubic-bezier(0.45,0,0.55,1), left 0.25s cubic-bezier(0.45,0,0.55,1),
+              width 0.25s cubic-bezier(0.45,0,0.55,1), height 0.25s cubic-bezier(0.45,0,0.55,1),
+              opacity 0.25s ease;
+  animation: vtour-fade-in 0.25s ease;
+  pointer-events: none !important;
+}
+
+.vtour-highlight-dim {
+  position: fixed; border-radius: 8px;
+  box-shadow: 0 0 0 9999px rgba(17,24,39,0.5);
+  transition: top 0.25s cubic-bezier(0.45,0,0.55,1), left 0.25s cubic-bezier(0.45,0,0.55,1),
+              width 0.25s cubic-bezier(0.45,0,0.55,1), height 0.25s cubic-bezier(0.45,0,0.55,1),
+              opacity 0.3s ease;
+  animation: vtour-fade-in 0.3s ease;
+  pointer-events: none !important;
+}
+
+.vtour-arrow { position: fixed; overflow: visible; animation: vtour-fade-in 0.3s ease; pointer-events: none !important; }
+.vtour-arrow path { fill: none; stroke: #2563eb; stroke-width: 2.5; }
+.vtour-arrow .vtour-arrow-head { fill: #2563eb; stroke: none; }
+
+.vtour-card {
+  position: fixed; z-index: 100000; background: #1e2530; color: #fff; border-radius: 12px;
+  padding: 16px 18px; max-width: 320px; box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  opacity: 0; transform: translateY(6px); pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16,1,0.3,1), transform 0.25s cubic-bezier(0.16,1,0.3,1),
+              top 0.25s cubic-bezier(0.45,0,0.55,1), left 0.25s cubic-bezier(0.45,0,0.55,1);
+}
+.vtour-card.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.vtour-card__step { font-size: 10.5px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.vtour-card__title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.vtour-card__text { font-size: 12.5px; line-height: 1.5; color: #cbd5e1; }
+.vtour-card__actions { display: flex; justify-content: flex-end; margin-top: 12px; }
+.vtour-card__btn {
+  background: #f97316; color: #fff; border: none; border-radius: 6px; padding: 6px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer; font: inherit;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.vtour-card__btn:hover { background: #ea6a0c; }
+.vtour-card__btn:active { transform: scale(0.96); }

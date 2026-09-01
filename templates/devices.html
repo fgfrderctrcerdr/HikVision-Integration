@@ -4,7 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Устройства — Verifix</title>
-<link rel="stylesheet" href="/static/css/styles.css" />
+<link rel="stylesheet" href="/static/css/styles.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/tour-common.css?v={{ v }}" />
 </head>
 <body>
 
@@ -13,7 +14,7 @@
   <nav class="topbar__tabs">
     <a href="#" class="topbar__tab is-active">Новые устройства</a>
     <a href="#" class="topbar__tab">Состояние сотрудников по устройствам</a>
-    <button type="button" class="topbar__tab topbar__tab--hikvision-cta" id="startHikvisionTour">Интеграция с HikVision</button>
+    <button type="button" class="topbar__tab" id="startHikvisionTour">Интеграция с HikVision</button>
     <a href="/how-to-find-ip" class="topbar__tab topbar__tab--guide">Вариант A: по IP-адресу</a>
     <a href="/how-to-connect-isup" class="topbar__tab topbar__tab--guide2">Вариант Б: через ISUP →</a>
   </nav>
@@ -109,35 +110,35 @@
 
 <footer class="page-footer">Copyright © 2020-2026, Verifix. Мок-концепт для инструкции по интеграции с HikVision — не боевые данные.</footer>
 
-<div class="tour-dim" id="tourDim"></div>
-<div class="tour-card" id="tourCard">
-  <div class="tour-card__step">Шаг 1 из 1 на этой странице</div>
-  <div class="tour-card__title">Нажмите «Создать»</div>
-  <div class="tour-card__text">Форма создания устройства откроется с подсказками — заполним поля вместе, шаг за шагом.</div>
-</div>
-
+<script src="/static/js/tour-common.js?v={{ v }}"></script>
 <script>
 (function () {
   var startBtn = document.getElementById('startHikvisionTour');
   var createBtn = document.getElementById('createDeviceBtn');
-  var dim = document.getElementById('tourDim');
-  var card = document.getElementById('tourCard');
+  var highlight = null, arrow = null, card = null;
 
-  function positionCard() {
-    var r = createBtn.getBoundingClientRect();
-    card.style.top = (r.bottom + 12) + 'px';
-    card.style.left = r.left + 'px';
+  function clearTour() {
+    VTourCommon.removeHighlight(highlight);
+    VTourCommon.removeArrow(arrow);
+    VTourCommon.removeCard(card);
+    highlight = arrow = card = null;
   }
 
   startBtn.addEventListener('click', function () {
-    createBtn.classList.add('tour-highlight');
-    dim.classList.add('is-visible');
-    positionCard();
-    card.classList.add('is-visible');
+    if (highlight) { clearTour(); return; }   // повторный клик — скрыть
+    highlight = VTourCommon.showHighlight(createBtn);
+    arrow = VTourCommon.drawArrow(startBtn, createBtn);
+    card = VTourCommon.showCard(createBtn, {
+      step: 'Шаг 1 из 1 на этой странице',
+      title: 'Нажмите «Создать»',
+      text: 'Форма создания устройства откроется с подсказками — заполним поля вместе, шаг за шагом.',
+    });
   });
 
   window.addEventListener('resize', function () {
-    if (card.classList.contains('is-visible')) positionCard();
+    if (!highlight) return;
+    VTourCommon.updateHighlight(highlight, createBtn);
+    VTourCommon.positionCard(card, createBtn);
   });
 
   createBtn.addEventListener('click', function () {

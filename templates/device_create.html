@@ -4,8 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Устройство (создание) — Verifix</title>
-<link rel="stylesheet" href="/static/css/form.css" />
-<link rel="stylesheet" href="/static/css/guide.css" />
+<link rel="stylesheet" href="/static/css/form.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/guide.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/tour-common.css?v={{ v }}" />
 </head>
 <body>
 
@@ -38,7 +39,14 @@
 
     <div class="field" id="fieldLocation">
       <label>Локация <span class="required">*</span></label>
-      <input type="search" id="inputLocation" placeholder="Поиск..." />
+      <div class="dropdown-input" id="locationDropdownWrap">
+        <input type="text" id="inputLocation" placeholder="Поиск..." autocomplete="off" readonly />
+        <div class="dropdown-input__list" id="locationDropdownList">
+          <div class="dropdown-input__option" data-value="Офис">Офис</div>
+          <div class="dropdown-input__option" data-value="Производство">Производство</div>
+          <div class="dropdown-input__option" data-value="Склад">Склад</div>
+        </div>
+      </div>
     </div>
 
     <div class="field" id="fieldSerial">
@@ -46,17 +54,17 @@
       <input type="text" id="inputSerial" />
     </div>
 
-    <div class="field" id="fieldModel" style="display:none;">
+    <div class="field reveal is-hidden" id="fieldModel">
       <label>Модель устройства</label>
       <input type="search" placeholder="Поиск..." />
     </div>
 
-    <div class="field" id="fieldAdmins">
+    <div class="field reveal" id="fieldAdmins">
       <label>Администраторы</label>
       <input type="search" placeholder="Поиск..." />
     </div>
 
-    <div class="toggle-field" id="fieldUseMain">
+    <div class="toggle-field reveal" id="fieldUseMain">
       <span class="toggle-field__label">Использовать основные настройки для этапов и типов трекинга</span>
       <span class="toggle-field__control">
         <label class="switch"><input type="checkbox" checked /><span class="switch__track"></span></label>
@@ -80,7 +88,7 @@
       </span>
     </div>
 
-    <div id="timepadAppBlock" style="margin-top:20px;">
+    <div class="reveal" id="timepadAppBlock" style="margin-top:20px;">
       <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:8px;">Скачайте приложение Verifix TimePad</label>
       <div class="app-badge">
         <div style="background:#000;color:#fff;border-radius:6px;padding:6px 10px;font-size:10px;display:flex;align-items:center;gap:6px;">
@@ -116,7 +124,7 @@
       </span>
     </div>
 
-    <div class="sub-radio" id="singleKindRadio" style="display:none;">
+    <div class="sub-radio reveal is-hidden" id="singleKindRadio">
       <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:8px;">Типы трекинга</label>
       <div class="radio-row">
         <label><input type="radio" name="trackKind" value="in" /> Приход</label>
@@ -125,7 +133,7 @@
       </div>
     </div>
 
-    <div id="globalToggleBlock">
+    <div class="reveal" id="globalToggleBlock">
       <div class="toggle-field">
         <span class="toggle-field__label">Использовать глобальные настройки прихода</span>
         <span class="toggle-field__control">
@@ -133,7 +141,7 @@
           <span class="toggle-field__text" id="toggleGlobalInText">да</span>
         </span>
       </div>
-      <div class="sub-radio" id="inRadio" style="display:none;">
+      <div class="sub-radio reveal is-hidden" id="inRadio">
         <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:6px;">Приход</label>
         <div class="radio-row">
           <label><input type="radio" name="inRule" value="first" /> Первая отметка</label>
@@ -149,7 +157,7 @@
           <span class="toggle-field__text" id="toggleGlobalOutText">да</span>
         </span>
       </div>
-      <div class="sub-radio" id="outRadio" style="display:none;">
+      <div class="sub-radio reveal is-hidden" id="outRadio">
         <label style="display:block;font-size:12.5px;color:#4b5563;margin-bottom:6px;">Уход</label>
         <div class="radio-row">
           <label><input type="radio" name="outRule" value="first" /> Первая отметка</label>
@@ -439,14 +447,7 @@
   </div>
 </div>
 
-<div class="tour-dim" id="tourDim"></div>
-<div class="tour-card" id="tourCard">
-  <div class="tour-card__step" id="tourCardStep"></div>
-  <div class="tour-card__title" id="tourCardTitle"></div>
-  <div class="tour-card__text" id="tourCardText"></div>
-  <div class="tour-card__actions"><button type="button" class="tour-card__btn" id="tourCardNext">Понятно</button></div>
-</div>
-
-<script src="/static/js/device-tour.js"></script>
+<script src="/static/js/tour-common.js?v={{ v }}"></script>
+<script src="/static/js/device-tour.js?v={{ v }}"></script>
 </body>
 </html>

@@ -13,10 +13,10 @@
   function syncDeviceType() {
     var checked = document.querySelector('input[name=deviceType]:checked');
     var isTimepad = checked && checked.value === 'timepad';
-    fieldModel.style.display = isTimepad ? 'none' : '';
-    fieldAdmins.style.display = isTimepad ? '' : 'none';
-    fieldUseMain.style.display = isTimepad ? '' : 'none';
-    timepadAppBlock.style.display = isTimepad ? '' : 'none';
+    fieldModel.classList.toggle('is-hidden', isTimepad);
+    fieldAdmins.classList.toggle('is-hidden', !isTimepad);
+    fieldUseMain.classList.toggle('is-hidden', !isTimepad);
+    timepadAppBlock.classList.toggle('is-hidden', !isTimepad);
   }
   deviceTypeRadios.forEach(function (r) { r.addEventListener('change', syncDeviceType); });
   syncDeviceType();
@@ -27,8 +27,8 @@
   var globalToggleBlock = document.getElementById('globalToggleBlock');
   function syncSingleKind() {
     toggleSingleKindText.textContent = toggleSingleKind.checked ? 'да' : 'нет';
-    singleKindRadio.style.display = toggleSingleKind.checked ? '' : 'none';
-    globalToggleBlock.style.display = toggleSingleKind.checked ? 'none' : '';
+    singleKindRadio.classList.toggle('is-hidden', !toggleSingleKind.checked);
+    globalToggleBlock.classList.toggle('is-hidden', toggleSingleKind.checked);
   }
   toggleSingleKind.addEventListener('change', syncSingleKind);
   syncSingleKind();
@@ -38,7 +38,7 @@
   var inRadio = document.getElementById('inRadio');
   function syncGlobalIn() {
     toggleGlobalInText.textContent = toggleGlobalIn.checked ? 'да' : 'нет';
-    inRadio.style.display = toggleGlobalIn.checked ? 'none' : '';
+    inRadio.classList.toggle('is-hidden', toggleGlobalIn.checked);
   }
   toggleGlobalIn.addEventListener('change', syncGlobalIn);
   syncGlobalIn();
@@ -48,7 +48,7 @@
   var outRadio = document.getElementById('outRadio');
   function syncGlobalOut() {
     toggleGlobalOutText.textContent = toggleGlobalOut.checked ? 'да' : 'нет';
-    outRadio.style.display = toggleGlobalOut.checked ? 'none' : '';
+    outRadio.classList.toggle('is-hidden', toggleGlobalOut.checked);
   }
   toggleGlobalOut.addEventListener('change', syncGlobalOut);
   syncGlobalOut();
@@ -62,6 +62,30 @@
     if (!input || !text || input.id) return;
     input.addEventListener('change', function () { text.textContent = input.checked ? 'да' : 'нет'; });
   });
+
+  // Выпадающий список "Локация" — хардкод 3 варианта для концепта.
+  (function () {
+    var input = document.getElementById('inputLocation');
+    var list = document.getElementById('locationDropdownList');
+    var wrap = document.getElementById('locationDropdownWrap');
+
+    function open() { list.classList.add('is-open'); }
+    function close() { list.classList.remove('is-open'); }
+
+    input.addEventListener('click', function (e) { e.stopPropagation(); open(); });
+    list.querySelectorAll('.dropdown-input__option').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        input.value = opt.dataset.value;
+        list.querySelectorAll('.dropdown-input__option').forEach(function (o) { o.classList.remove('is-selected'); });
+        opt.classList.add('is-selected');
+        close();
+        input.dispatchEvent(new Event('change'));
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!wrap.contains(e.target)) close();
+    });
+  })();
 
   // Вкладки мини-гида "как достать серийный номер"
   document.querySelectorAll('.serial-tab').forEach(function (tab) {
@@ -118,27 +142,22 @@
       var answered = document.getElementById('kindQuestionAnswered');
       answered.textContent = '✓ Настройки применены: «' + ANSWER_LABELS[btn.dataset.answer] + '»';
       answered.style.display = 'block';
-      colRight.classList.add('tour-highlight');
       colRight.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(function () { colRight.classList.remove('tour-highlight'); }, 1600);
+      var flash = VTourCommon.showHighlight(colRight);
+      setTimeout(function () { VTourCommon.removeHighlight(flash); }, 1600);
     });
   });
 
   // ============================================================
   // Сам гид — запускается, только если пришли по ссылке ?tour=1
   // (её ставит devices.html после клика "Интеграция с HikVision" ->
-  // "Создать"). Подсвечивает НАСТОЯЩИЕ поля формы кольцом+затемнением,
-  // не схематичный макет — тот же принцип, что в Mock-Stand.
+  // "Создать"). Подсвечивает НАСТОЯЩИЕ поля формы — переиспользует
+  // общий хелпер VTourCommon (см. tour-common.js), тот же визуальный
+  // язык, что в Mock-Stand: кольцо + вырез-затемнение, не сплошной
+  // оверлей поверх z-index.
   // ============================================================
   var params = new URLSearchParams(window.location.search);
   if (params.get('tour') !== '1') return;
-
-  var dim = document.getElementById('tourDim');
-  var card = document.getElementById('tourCard');
-  var cardStep = document.getElementById('tourCardStep');
-  var cardTitle = document.getElementById('tourCardTitle');
-  var cardText = document.getElementById('tourCardText');
-  var cardNext = document.getElementById('tourCardNext');
 
   var steps = [
     {
@@ -173,50 +192,39 @@
 
   var idx = 0;
   var pollTimer = null;
+  var highlight = null;
+  var card = null;
 
-  function clearHighlight() {
-    document.querySelectorAll('.tour-highlight').forEach(function (e) { e.classList.remove('tour-highlight'); });
-  }
-
-  function positionCard(target) {
-    // .tour-card — position:fixed, значит координаты уже относительно
-    // окна просмотра (viewport) — getBoundingClientRect ничего
-    // добавлять не нужно, в отличие от position:absolute.
-    var r = target.getBoundingClientRect();
-    var top = r.bottom + 12;
-    var left = r.left;
-    if (left + 340 > window.innerWidth) left = window.innerWidth - 356;
-    if (top + 170 > window.innerHeight) top = Math.max(12, r.top - 170);
-    card.style.top = top + 'px';
-    card.style.left = left + 'px';
+  function clearVisuals() {
+    VTourCommon.removeHighlight(highlight);
+    VTourCommon.removeCard(card);
+    highlight = card = null;
   }
 
   function pollWait(s) {
     clearInterval(pollTimer);
-    if (s.waitFor()) { cardNext.style.display = ''; return; }
-    cardNext.style.display = 'none';
+    var btn = card ? card.querySelector('.vtour-card__btn') : null;
+    function sync() {
+      if (!btn) return;
+      btn.style.display = s.waitFor() ? '' : 'none';
+    }
+    sync();
     pollTimer = setInterval(function () {
-      if (s.waitFor()) {
-        clearInterval(pollTimer);
-        cardNext.style.display = '';
-        positionCard(s.el);
-      }
+      if (s.waitFor()) { clearInterval(pollTimer); sync(); }
     }, 350);
   }
 
   function showStep(i) {
-    clearHighlight();
+    clearVisuals();
     var s = steps[i];
     if (!s) { finish(); return; }
     s.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     setTimeout(function () {
-      s.el.classList.add('tour-highlight');
-      dim.classList.add('is-visible');
-      cardStep.textContent = s.step;
-      cardTitle.textContent = s.title;
-      cardText.textContent = s.text;
-      positionCard(s.el);
-      card.classList.add('is-visible');
+      highlight = VTourCommon.showHighlight(s.el);
+      card = VTourCommon.showCard(s.el, {
+        step: s.step, title: s.title, text: s.text,
+        btnLabel: 'Понятно', onClick: next,
+      });
       if (s.onEnter) s.onEnter();
       pollWait(s);
     }, 320);
@@ -229,21 +237,31 @@
 
   function finish() {
     clearInterval(pollTimer);
-    clearHighlight();
-    dim.classList.remove('is-visible');
-    card.classList.remove('is-visible');
+    clearVisuals();
     var q = document.getElementById('kindQuestion');
     q.style.display = 'block';
     q.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  cardNext.addEventListener('click', next);
+  function repositionCurrent() {
+    if (!highlight) return;
+    var s = steps[idx];
+    VTourCommon.updateHighlight(highlight, s.el);
+    VTourCommon.positionCard(card, s.el);
+  }
+  window.addEventListener('resize', repositionCurrent);
+  // scrollIntoView({behavior:'smooth'}) не мгновенный — кольцо/карточка
+  // раньше позиционировались ОДИН раз через 320мс после старта скролла
+  // и потом "отставали", если плавная прокрутка ещё продолжалась
+  // (или пользователь сам прокрутил страницу). На capture:true, чтобы
+  // ловить scroll и на вложенных прокручиваемых контейнерах тоже.
+  window.addEventListener('scroll', repositionCurrent, true);
 
-  // Дополнительно к общему поллингу — реагируем на клик по радио сразу,
-  // чтобы кнопка "Понятно" не ждала до 350мс лишний раз.
+  // Реагируем на клик по радио "Тип устройства" сразу, не дожидаясь
+  // 350мс интервала опроса — отзывчивее для самого частого случая.
   deviceTypeRadios.forEach(function (r) {
     r.addEventListener('change', function () {
-      if (steps[idx] === steps[0]) pollWait(steps[0]);
+      if (idx === 0) pollWait(steps[0]);
     });
   });
 

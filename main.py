@@ -14,6 +14,8 @@ Verifix — воспроизводить их 1:1 не стал).
 """
 
 from pathlib import Path
+import os
+import time
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
@@ -23,6 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(title="Verifix HikVision Integration")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+# Версия ассетов для cache-busting — тот же фикс, что делал в Mock-Stand,
+# когда браузер держал старый CSS/JS в кэше и правки не подхватывались
+# без жёсткого рефреша (похоже, именно это и было первопричиной "кнопка
+# ничего не делает" — гид рендерился без стилей из-за кэша). На Railway
+# берём хэш коммита, локально — таймстамп старта процесса.
+ASSET_VERSION = os.environ.get("RAILWAY_GIT_COMMIT_SHA") or str(int(time.time()))
+templates.env.globals["v"] = ASSET_VERSION
 
 # Мок-данные устройств — сознательно НЕ копия реальных записей со скриншота
 # (там реальные названия устройств клиентов), а generic-примеры того же
@@ -87,6 +97,14 @@ def device_create_page(request: Request):
     этим параметром ставит devices.html после клика по кнопке
     "Создать" внутри гида на списке устройств."""
     return templates.TemplateResponse(request, "device_create.html", {})
+
+
+@app.middleware("http")
+async def static_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    return response
 
 
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
