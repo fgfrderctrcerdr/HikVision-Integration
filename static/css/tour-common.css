@@ -56,9 +56,9 @@
 .vtour-card__text { font-size: 12.5px; line-height: 1.5; color: #cbd5e1; }
 .vtour-card__actions { display: flex; justify-content: flex-end; margin-top: 12px; }
 .vtour-card__btn {
-  background: #f97316; color: #fff; border: none; border-radius: 6px; padding: 6px 14px;
+  background: #2563eb; color: #fff; border: none; border-radius: 6px; padding: 6px 14px;
   font-size: 12px; font-weight: 600; cursor: pointer; font: inherit;
   transition: background 0.15s ease, transform 0.15s ease;
 }
-.vtour-card__btn:hover { background: #ea6a0c; }
+.vtour-card__btn:hover { background: #1d4ed8; }
 .vtour-card__btn:active { transform: scale(0.96); }

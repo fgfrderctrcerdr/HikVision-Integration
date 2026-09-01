@@ -87,16 +87,6 @@
     });
   })();
 
-  // Вкладки мини-гида "как достать серийный номер"
-  document.querySelectorAll('.serial-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.serial-tab').forEach(function (t) { t.classList.remove('is-active'); });
-      document.querySelectorAll('.serial-panel').forEach(function (p) { p.classList.remove('is-active'); });
-      tab.classList.add('is-active');
-      document.getElementById(tab.dataset.tab).classList.add('is-active');
-    });
-  });
-
   // ============================================================
   // Вопрос "приходы/уходы/оба" — по ответу заполняет правую панель
   // ТОЧНО так, как в реальном Verifix (см. три референс-скрина):
@@ -138,9 +128,10 @@
   document.querySelectorAll('.kind-question__btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       applyKindAnswer(btn.dataset.answer);
-      document.getElementById('kindQuestionOptions').style.display = 'none';
+      document.querySelectorAll('.kind-question__btn').forEach(function (b) { b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
       var answered = document.getElementById('kindQuestionAnswered');
-      answered.textContent = '✓ Настройки применены: «' + ANSWER_LABELS[btn.dataset.answer] + '»';
+      answered.textContent = 'Настройки применены: «' + ANSWER_LABELS[btn.dataset.answer] + '». Можно выбрать другой вариант в любой момент.';
       answered.style.display = 'block';
       colRight.scrollIntoView({ behavior: 'smooth', block: 'center' });
       var flash = VTourCommon.showHighlight(colRight);
@@ -187,6 +178,12 @@
       text: 'Ниже появится пошаговая инструкция, как достать серийный номер устройства.',
       waitFor: function () { return document.getElementById('inputSerial').value.trim().length > 0; },
       onEnter: function () { document.getElementById('serialGuideBox').classList.add('is-open'); },
+      // По фидбоку — только для этого шага: маловероятно, что пользователь
+      // додумается вписать реальный серийник только ради появления кнопки
+      // "Понятно". Достаточно клика/фокуса на поле — сразу показываем
+      // кнопку И убираем затемнение (рамка остаётся тихим ориентиром),
+      // чтобы инструкцию ниже было удобно читать без тёмного слоя поверх.
+      instantOnFocus: true,
     },
   ];
 
@@ -227,6 +224,20 @@
       });
       if (s.onEnter) s.onEnter();
       pollWait(s);
+
+      if (s.instantOnFocus) {
+        var focusTarget = s.el.querySelector('input');
+        if (focusTarget) {
+          var onFocus = function () {
+            clearInterval(pollTimer);
+            VTourCommon.fadeDim(highlight);
+            var btn = card ? card.querySelector('.vtour-card__btn') : null;
+            if (btn) btn.style.display = '';
+            focusTarget.removeEventListener('focus', onFocus);
+          };
+          focusTarget.addEventListener('focus', onFocus);
+        }
+      }
     }, 320);
   }
 

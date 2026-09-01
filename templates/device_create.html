@@ -185,7 +185,8 @@
   </div>
 </div>
 
-<!-- Вопрос "приходы/уходы/оба" — раскрывается после того, как обязательные поля заполнены -->
+<!-- Вопрос "приходы/уходы/оба" — раскрывается после того, как обязательные поля заполнены.
+     Можно менять ответ сколько угодно раз — не одноразовый выбор. -->
 <div class="form-layout" style="padding-top:0;" id="kindQuestionWrap">
   <div class="kind-question" id="kindQuestion" style="display:none;width:100%;">
     <p class="kind-question__title">Данная камера принимает только приходы, только уходы, или и то и то?</p>
@@ -205,12 +206,7 @@
     <p class="serial-guide__intro">Два шага: сначала найдите IP-адрес устройства на самом устройстве,
     потом откройте по этому адресу веб-панель устройства в браузере — там серийный номер виден в настройках.</p>
 
-    <div class="serial-tabs">
-      <button type="button" class="serial-tab is-active" data-tab="tab1">Шаг 1 · На самом устройстве</button>
-      <button type="button" class="serial-tab" data-tab="tab2">Шаг 2 · В браузере</button>
-    </div>
-
-    <div class="serial-panel is-active" id="tab1">
+    <h3 class="serial-section-title">Шаг 1 — Находим IP-адрес</h3>
       <ol class="steps">
         <li class="step">
           <div class="step__text">
@@ -322,9 +318,16 @@
           </div>
         </li>
       </ol>
-    </div>
 
-    <div class="serial-panel" id="tab2">
+      <div class="serial-video">
+        <h4 class="serial-video__title">Видео-пример: как посмотреть IP-адрес на самом устройстве</h4>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-example.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-example.mp4">скачайте файл</a>.
+        </video>
+      </div>
+
+    <h3 class="serial-section-title">Шаг 2 — Открываем админ-панель в браузере и ищем серийный номер</h3>
       <ol class="steps">
         <li class="step">
           <div class="step__text">
@@ -437,13 +440,12 @@
       </ol>
 
       <div class="serial-video">
-        <h3 class="serial-video__title">Видео-пример: вход в веб-панель и поиск серийного номера</h3>
+        <h4 class="serial-video__title">Видео-пример: вход в веб-панель и поиск серийного номера</h4>
         <video class="serial-video__player" controls preload="metadata">
           <source src="/static/video-webpanel-example.mp4" type="video/mp4" />
           Ваш браузер не поддерживает встроенное видео — <a href="/static/video-webpanel-example.mp4">скачайте файл</a>.
         </video>
       </div>
-    </div>
   </div>
 </div>
 

@@ -127,7 +127,7 @@
   startBtn.addEventListener('click', function () {
     if (highlight) { clearTour(); return; }   // повторный клик — скрыть
     highlight = VTourCommon.showHighlight(createBtn);
-    arrow = VTourCommon.drawArrow(startBtn, createBtn);
+    arrow = VTourCommon.drawArrow(startBtn, createBtn, { toEdge: 'right' });
     card = VTourCommon.showCard(createBtn, {
       step: 'Шаг 1 из 1 на этой странице',
       title: 'Нажмите «Создать»',

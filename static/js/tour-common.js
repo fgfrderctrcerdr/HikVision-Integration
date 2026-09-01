@@ -51,18 +51,34 @@ var VTourCommon = (function () {
     if (highlight.dim && highlight.dim.parentNode) highlight.dim.parentNode.removeChild(highlight.dim);
   }
 
-  // Изогнутая SVG-стрелка от from к to — 1:1 портировано из Mock-Stand
-  // (verifix-tour.js drawArrow): заходит с левого края обоих элементов,
-  // дуга уводится влево за их пределы, а не поперёк.
-  function drawArrow(from, to) {
+  // По фокусу на подсвеченное поле — по фидбоку: затемнение мешает
+  // читать длинную инструкцию ниже по странице, но рамка вокруг поля
+  // как тихий ориентир может остаться. 1:1 идея из Mock-Stand ("По
+  // фокусу на подсвеченное поле — убираем и затемнение, и текст
+  // подсказки; рамка на поле... остаётся").
+  function fadeDim(highlight) {
+    if (!highlight || !highlight.dim) return;
+    highlight.dim.style.opacity = '0';
+  }
+
+  // Изогнутая SVG-стрелка от from к to — портировано из Mock-Stand
+  // (verifix-tour.js drawArrow): по умолчанию заходит с левого края
+  // обоих элементов, дуга уводится влево за их пределы. Опционально
+  // (opts.toEdge='right') можно навести на правый край цели — полезно,
+  // когда триггер находится справа-сверху от цели (см. devices.html:
+  // "Интеграция с HikVision" в топбаре справа, "Создать" слева-снизу —
+  // заход с левого края давал лишний петляющий изгиб).
+  function drawArrow(from, to, opts) {
+    opts = opts || {};
     var root = ensureRoot();
     var fr = from.getBoundingClientRect();
     var tr = to.getBoundingClientRect();
 
     var x1 = fr.left, y1 = fr.top + fr.height / 2;
-    var x2 = tr.left, y2 = tr.top + tr.height / 2;
+    var x2 = opts.toEdge === 'right' ? tr.right : tr.left;
+    var y2 = tr.top + tr.height / 2;
     var swing = Math.max(90, Math.min(160, Math.abs(y2 - y1) * 0.7));
-    var cx = Math.min(x1, x2) - swing;
+    var cx = opts.toEdge === 'right' ? Math.max(x1, x2) + swing : Math.min(x1, x2) - swing;
     var cy = (y1 + y2) / 2;
 
     var minX = Math.min(x1, x2, cx) - 20, minY = Math.min(y1, y2, cy) - 20;
@@ -134,6 +150,7 @@ var VTourCommon = (function () {
     showHighlight: showHighlight,
     updateHighlight: updateHighlight,
     removeHighlight: removeHighlight,
+    fadeDim: fadeDim,
     drawArrow: drawArrow,
     removeArrow: removeArrow,
     showCard: showCard,
