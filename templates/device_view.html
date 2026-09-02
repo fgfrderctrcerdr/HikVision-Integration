@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Устройство (просмотр) — Verifix</title>
+<link rel="stylesheet" href="/static/css/form.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/view.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/tour-common.css?v={{ v }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span>☰</span> Устройство (просмотр)</div>
+</header>
+
+<div class="form-toolbar">
+  <button class="btn btn--edit">ИЗМЕНИТЬ</button>
+  <button class="btn btn--primary">СИНХРОНИЗИРОВАТЬ УСТРОЙСТВО</button>
+  <a href="/" class="btn btn--ghost" style="text-decoration:none;display:inline-flex;align-items:center;">ЗАКРЫТЬ</a>
+</div>
+
+<div class="view-layout">
+  <aside class="view-sidebar">
+    <div class="view-sidebar__id">1213123 <span class="view-sidebar__internal">(109121)</span></div>
+    <span class="view-sidebar__badge">Активный</span>
+    <nav class="view-tabs">
+      <div class="view-tab is-active">Основная информация</div>
+      <div class="view-tab">Физические лица</div>
+      <div class="view-tab">Отметки</div>
+      <div class="view-tab">Игнорируемые физические лица</div>
+      <div class="view-tab">Игнорируемые подразделения</div>
+      <div class="view-tab">Команды</div>
+      <div class="view-tab">Все отметки</div>
+    </nav>
+  </aside>
+
+  <main class="view-content">
+    <h1 class="view-content__title">Основная информация</h1>
+
+    <div class="view-grid">
+      <div class="view-col">
+        <div class="view-field"><label>Тип устройства</label><div class="view-field__box">Hikvision</div></div>
+        <div class="view-field"><label>Название</label><div class="view-field__box">Hikvision Entrance 1</div></div>
+        <div class="view-field"><label>Локация</label><div class="view-field__box">Головной офис</div></div>
+        <div class="view-field"><label>Последняя активность</label><div class="view-field__box">&nbsp;</div></div>
+        <div class="view-field"><label>Авто-генерация приходов</label><div class="view-field__box">Нет</div></div>
+        <div class="view-field"><label>Авто-генерация уходов</label><div class="view-field__box">Нет</div></div>
+        <div class="view-field"><label>Язык</label><div class="view-field__box">&nbsp;</div></div>
+      </div>
+      <div class="view-col">
+        <div class="view-field"><label>Типы идентификации</label><div class="view-field__box">&nbsp;</div></div>
+        <div class="view-field"><label>Недействительные отметки</label><div class="view-field__box">Нет</div></div>
+        <div class="view-field"><label>Типы отметки</label><div class="view-field__box">&nbsp;</div></div>
+        <div class="view-field"><label>Использовать основные настройки</label><div class="view-field__box">Да</div></div>
+        <div class="view-field"><label>Настройки прихода</label><div class="view-field__box">Первая отметка</div></div>
+        <div class="view-field"><label>Настройки ухода</label><div class="view-field__box">Первая отметка</div></div>
+      </div>
+    </div>
+
+    <div class="view-isup" id="isupBlock">
+      <div class="view-field">
+        <label>Адрес шлюза устройства HikCentral</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>49.13.32.149</span>
+          <button type="button" class="copy-btn" data-copy="49.13.32.149" title="Скопировать">⧉</button>
+        </div>
+      </div>
+      <div class="view-field">
+        <label>Порт шлюза устройства HikCentral</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>6368</span>
+          <button type="button" class="copy-btn" data-copy="6368" title="Скопировать">⧉</button>
+        </div>
+      </div>
+      <div class="view-field">
+        <label>ID устройства</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>integratioamazon6</span>
+          <button type="button" class="copy-btn" data-copy="integratioamazon6" title="Скопировать">⧉</button>
+        </div>
+      </div>
+      <div class="view-field">
+        <label>Ключ ISUP</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>J49ZG82PV</span>
+          <button type="button" class="copy-btn" data-copy="J49ZG82PV" title="Скопировать">⧉</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Раскрывается гидом: "теперь настройте физическое устройство этими же значениями" -->
+    <div class="setup-guide" id="setupGuideBox">
+      <h2 class="setup-guide__title">Настройте устройство этими же данными</h2>
+      <p class="setup-guide__intro">Скопируйте 4 значения выше и введите их на самом устройстве — двумя способами
+      на выбор. Оба приводят к одному результату, разница только в том, чем удобнее пользоваться на месте.</p>
+
+      <div class="setup-methods">
+        <div class="setup-method">
+          <div class="setup-method__badge">Способ A</div>
+          <h3 class="setup-method__title">Через экран устройства</h3>
+          <p class="setup-method__text">Меню → Связь → ISUP — на экране самого устройства, пальцем. Уже разобрано
+          у нас пошагово, с анимациями и видео.</p>
+          <a href="/how-to-connect-isup" class="setup-method__link" target="_blank">Открыть инструкцию →</a>
+        </div>
+
+        <div class="setup-method">
+          <div class="setup-method__badge">Способ Б</div>
+          <h3 class="setup-method__title">Через браузер устройства</h3>
+          <p class="setup-method__text">Откройте IP-адрес устройства в браузере, войдите под администратором,
+          затем: <b>Конфигурация → Сеть → Доступ к устройству → вкладка ISUP</b>. Впишите те же 4 значения.</p>
+
+          <div class="browser-mock" style="margin:14px 0;">
+            <div class="browser-mock__bar">
+              <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+              <div class="browser-mock__url">192.168.11.64/doc/index.html#/config/network/platformAccess</div>
+            </div>
+            <div class="browser-mock__body">
+              <div class="admin-mock" style="min-height:220px;">
+                <div class="admin-mock__sidebar">
+                  <div class="admin-mock__icon">▤</div>
+                  <div class="admin-mock__icon">👤</div>
+                  <div class="admin-mock__icon">📋</div>
+                  <div class="admin-mock__icon is-target">⚙<span class="mini-tap"></span></div>
+                  <div class="admin-mock__icon">🖼</div>
+                </div>
+                <div class="admin-mock__menu">
+                  <div class="admin-mock__menu-group">Сеть</div>
+                  <div class="admin-mock__menu-item">Сетевые настройки</div>
+                  <div class="admin-mock__menu-item">Сетевая служба</div>
+                  <div class="admin-mock__menu-item is-target">Доступ к устройству</div>
+                </div>
+                <div class="admin-mock__content">
+                  <div style="display:flex;gap:14px;margin-bottom:8px;font-weight:700;">
+                    <span style="color:#2563eb;border-bottom:2px solid #2563eb;padding-bottom:4px;">ISUP</span>
+                    <span style="color:#9ca3af;">Hik-Connect</span>
+                  </div>
+                  <div class="admin-mock__row"><span>Включить</span><span style="color:#16a34a;">●вкл</span></div>
+                  <div class="admin-mock__row is-target"><span>IP-адрес сервера</span><span>49.13.32.149</span></div>
+                  <div class="admin-mock__row is-target"><span>Номер порта</span><span>6368</span></div>
+                  <div class="admin-mock__row is-target"><span>Идентификатор устройства</span><span>integratioamazon6</span></div>
+                  <div class="admin-mock__row is-target"><span>Ключ шифрования</span><span>••••••••</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="serial-video" style="margin-top:0;">
+            <video class="serial-video__player" controls preload="metadata">
+              <source src="/static/video-webbrowser-isup-example.mp4" type="video/mp4" />
+              Ваш браузер не поддерживает встроенное видео.
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer class="page-footer">Copyright © 2020-2026, Verifix. Мок-концепт для инструкции по интеграции с HikVision — не боевые данные.</footer>
+
+<script src="/static/js/tour-common.js?v={{ v }}"></script>
+<script src="/static/js/device-view-tour.js?v={{ v }}"></script>
+</body>
+</html>

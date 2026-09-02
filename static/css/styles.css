@@ -109,6 +109,15 @@ button.topbar__tab {
   white-space: nowrap;
 }
 .devices-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.device-row { cursor: pointer; }
+.device-row-actions td { padding: 10px 14px; background: #f7f8fa; }
+.row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.row-actions__btn {
+  background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 7px 14px;
+  font: inherit; font-size: 12px; font-weight: 600; color: var(--text); cursor: pointer;
+}
+.row-actions__btn:hover { background: #f1f2f4; }
+.row-actions__btn--view { color: #2563eb; border-color: #93c5fd; }
 .devices-table tbody tr:hover { background: #fafbfc; }
 .col-check { width: 34px; }
 

@@ -91,7 +91,7 @@
       </thead>
       <tbody>
         {% for d in devices %}
-        <tr>
+        <tr class="device-row" data-row-id="{{ loop.index0 }}" data-kind="{{ d.kind|lower }}">
           <td class="col-check"><input type="checkbox" /></td>
           <td><span class="device-badge device-badge--{{ d.kind|lower }}">{{ d.kind }}</span></td>
           <td>{{ '✓' if d.ready else '—' }}</td>
@@ -101,6 +101,18 @@
           <td>{{ d.tz }}</td>
           <td><span class="status-dot status-dot--{{ d.status }}"></span>{{ status_label[d.status] }}</td>
           <td>{{ d.last_seen or '—' }}</td>
+        </tr>
+        <tr class="device-row-actions" data-actions-for="{{ loop.index0 }}" hidden>
+          <td colspan="9">
+            <div class="row-actions">
+              <button type="button" class="row-actions__btn row-actions__btn--view" data-goto-view>Просмотр</button>
+              <button type="button" class="row-actions__btn">Изменить</button>
+              <button type="button" class="row-actions__btn">Удалить</button>
+              <button type="button" class="row-actions__btn">Отметки</button>
+              <button type="button" class="row-actions__btn">Отключить автообновление токена</button>
+              <button type="button" class="row-actions__btn">Применить настройки для отметок</button>
+            </div>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -144,6 +156,65 @@
   createBtn.addEventListener('click', function () {
     window.location.href = '/device-create?tour=1';
   });
+
+  // Клик по строке устройства — раскрывает панель действий
+  // (Просмотр/Изменить/Удалить/...), как в реальном Verifix.
+  document.querySelectorAll('.device-row').forEach(function (row) {
+    row.addEventListener('click', function () {
+      var id = row.dataset.rowId;
+      document.querySelectorAll('.device-row-actions').forEach(function (r) {
+        if (r.dataset.actionsFor !== id) r.hidden = true;
+      });
+      var actionsRow = document.querySelector('.device-row-actions[data-actions-for="' + id + '"]');
+      actionsRow.hidden = !actionsRow.hidden;
+      if (!actionsRow.hidden) row.dispatchEvent(new CustomEvent('vtour:rowOpened', { bubbles: true }));
+    });
+  });
+
+  document.querySelectorAll('[data-goto-view]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      window.location.href = '/device-view?tour=1';
+    });
+  });
+
+  // ============================================================
+  // Второй гид — после сохранения устройства (device-create.html
+  // редиректит сюда с ?device_created=1). Ведёт: кликните на
+  // устройство HikVision -> нажмите "Просмотр" -> дальше гид
+  // продолжается на странице просмотра устройства.
+  // ============================================================
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('device_created') !== '1') return;
+
+  var firstHikRow = document.querySelector('.device-row[data-kind="hik"]');
+  if (!firstHikRow) return;
+
+  var postSaveHighlight = VTourCommon.showHighlight(firstHikRow);
+  var postSaveCard = VTourCommon.showCard(firstHikRow, {
+    step: 'Что дальше',
+    title: 'Устройство создано — заберём данные для ISUP',
+    text: 'Кликните на строку этого устройства HikVision, чтобы открыть панель действий.',
+  });
+  firstHikRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  firstHikRow.addEventListener('vtour:rowOpened', function onOpened() {
+    firstHikRow.removeEventListener('vtour:rowOpened', onOpened);
+    VTourCommon.removeHighlight(postSaveHighlight);
+    VTourCommon.removeCard(postSaveCard);
+
+    var viewBtn = document.querySelector('.device-row-actions[data-actions-for="' + firstHikRow.dataset.rowId + '"] [data-goto-view]');
+    var highlight2 = VTourCommon.showHighlight(viewBtn);
+    var card2 = VTourCommon.showCard(viewBtn, {
+      step: 'Что дальше',
+      title: 'Нажмите «Просмотр»',
+      text: 'Там — данные для подключения устройства по ISUP: адрес, порт, ID и ключ.',
+    });
+    window.addEventListener('resize', function () {
+      VTourCommon.updateHighlight(highlight2, viewBtn);
+      VTourCommon.positionCard(card2, viewBtn);
+    });
+  }, { once: true });
 })();
 </script>
 

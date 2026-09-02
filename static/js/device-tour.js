@@ -133,10 +133,20 @@
       var answered = document.getElementById('kindQuestionAnswered');
       answered.textContent = 'Настройки применены: «' + ANSWER_LABELS[btn.dataset.answer] + '». Можно выбрать другой вариант в любой момент.';
       answered.style.display = 'block';
-      colRight.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      var flash = VTourCommon.showHighlight(colRight);
-      setTimeout(function () { VTourCommon.removeHighlight(flash); }, 1600);
+      // По фидбеку: без затемнения/подсветки справа — настройки просто
+      // плавно переключаются (см. .reveal transitions), никакого
+      // дополнительного акцента не нужно.
     });
+  });
+
+  // Кнопки "Сохранить"/"Сохранить и синхронизировать" — по фидбеку
+  // должны реально срабатывать и уводить на список устройств, откуда
+  // продолжается гид (см. devices.html: ?device_created=1). Раз это
+  // мок без бэкенда — просто редирект с этим сигналом, без реального
+  // сохранения куда-либо.
+  ['saveBtn', 'saveSyncBtn'].forEach(function (id) {
+    var btn = document.getElementById(id);
+    if (btn) btn.addEventListener('click', function () { window.location.href = '/?device_created=1'; });
   });
 
   // ============================================================

@@ -99,6 +99,17 @@ def device_create_page(request: Request):
     return templates.TemplateResponse(request, "device_create.html", {})
 
 
+@app.get("/device-view")
+def device_view_page(request: Request):
+    """Просмотр устройства — повторяет реальную страницу Verifix
+    (device_view, см. референс-скрины + видео Vladimir). Показывает
+    данные для ISUP-подключения (адрес/порт/ID/ключ) с кнопками
+    копирования. ?tour=1 запускает гид, подсвечивающий эти поля и
+    раскрывающий блок "как настроить устройство этими же данными"
+    (см. static/js/device-view-tour.js)."""
+    return templates.TemplateResponse(request, "device_view.html", {})
+
+
 @app.middleware("http")
 async def static_cache_headers(request: Request, call_next):
     response = await call_next(request)
