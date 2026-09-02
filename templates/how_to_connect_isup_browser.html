@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Как подключить устройство через ISUP (браузер) — Verifix</title>
+<link rel="stylesheet" href="/static/css/guide.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/form.css?v={{ v }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span class="topbar__hamburger">☰</span> Устройства</div>
+  <nav class="topbar__tabs">
+    <a href="/">Список устройств</a>
+    <a href="/how-to-find-ip">Вариант A: по IP-адресу</a>
+    <a href="/how-to-connect-isup">Вариант Б: через ISUP (экран)</a>
+    <a href="/how-to-connect-isup-browser" class="is-active">Вариант Б: через ISUP (браузер)</a>
+  </nav>
+</header>
+
+<main class="guide">
+  <h1 class="guide__title">Как подключить устройство к Verifix через ISUP — из браузера устройства</h1>
+  <p class="guide__intro">
+    Тот же результат, что и через экран устройства, но через браузер — на компьютере, без необходимости
+    подходить к самому устройству. Понадобятся значения со страницы просмотра устройства в Verifix
+    (адрес и порт шлюза HikCentral, ID устройства, ключ ISUP) — скопируйте их оттуда заранее.
+  </p>
+
+  <div class="guide__branch-note">
+    <b>Перед началом:</b> откройте страницу устройства в Verifix (Устройства → выберите устройство →
+    «Просмотр») в соседней вкладке — оттуда будете копировать значения для полей ниже.
+  </div>
+
+  <ol class="steps">
+    <li class="step">
+      <div class="step__text">
+        <h2>1. Откройте IP-адрес устройства в браузере</h2>
+        <p>На любом компьютере в той же сети введите в адресную строку IP-адрес устройства
+        (например, <code>192.168.11.64</code>). Откроется страница входа в веб-панель устройства.</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.64</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="login-mock">
+            <div class="login-mock__logo">HIKVISION</div>
+            <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Добро пожаловать</div>
+            <div class="login-mock__field">admin</div>
+            <div class="login-mock__field">••••••••</div>
+            <div class="login-mock__btn">Вход<span class="mini-tap"></span></div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>2. Войдите под администратором</h2>
+        <p>Логин — обычно <code>admin</code>, пароль — тот же, что задан на самом устройстве
+        при первичной настройке. Нажмите «Вход».</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>3. Откройте «Конфигурация» → «Сеть» → «Доступ к устройству»</h2>
+        <p>Слева — узкая колонка иконок, нажмите на значок шестерёнки («Конфигурация»). В меню —
+        раздел <b>«Сеть»</b>, в нём — <b>«Доступ к устройству»</b>. На открывшейся странице выберите
+        вкладку <b>ISUP</b> (обычно открыта по умолчанию).</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.64/doc/index.html#/config/network/platformAccess</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="admin-mock">
+            <div class="admin-mock__sidebar">
+              <div class="admin-mock__icon">▤</div>
+              <div class="admin-mock__icon">👤</div>
+              <div class="admin-mock__icon">📋</div>
+              <div class="admin-mock__icon is-target">⚙<span class="mini-tap"></span></div>
+              <div class="admin-mock__icon">🖼</div>
+            </div>
+            <div class="admin-mock__menu">
+              <div class="admin-mock__menu-group">Сеть</div>
+              <div class="admin-mock__menu-item">Сетевые настройки</div>
+              <div class="admin-mock__menu-item">Сетевая служба</div>
+              <div class="admin-mock__menu-item is-target">Доступ к устройству</div>
+            </div>
+            <div class="admin-mock__content">
+              <div style="display:flex;gap:14px;margin-bottom:8px;font-weight:700;">
+                <span style="color:#2563eb;border-bottom:2px solid #2563eb;padding-bottom:4px;">ISUP</span>
+                <span style="color:#9ca3af;">Hik-Connect</span>
+              </div>
+              <div class="admin-mock__row"><span>Включить</span><span style="color:#16a34a;">●вкл</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>4. Впишите 4 значения со страницы устройства в Verifix</h2>
+        <p>«IP-адрес сервера» и «Номер порта» — это <b>Адрес шлюза устройства HikCentral</b> и
+        <b>Порт шлюза устройства HikCentral</b> в Verifix. «Идентификатор устройства» и «Ключ
+        шифрования» — это <b>ID устройства</b> и <b>Ключ ISUP</b> там же. Переключите «Включить»,
+        если ещё выключено.</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.64/doc/index.html#/config/network/platformAccess</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="admin-mock">
+            <div class="admin-mock__sidebar">
+              <div class="admin-mock__icon">▤</div>
+              <div class="admin-mock__icon">👤</div>
+              <div class="admin-mock__icon">📋</div>
+              <div class="admin-mock__icon" style="background:rgba(249,115,22,0.25);color:var(--accent);">⚙</div>
+              <div class="admin-mock__icon">🖼</div>
+            </div>
+            <div class="admin-mock__menu">
+              <div class="admin-mock__menu-group">Сеть</div>
+              <div class="admin-mock__menu-item">Сетевые настройки</div>
+              <div class="admin-mock__menu-item">Сетевая служба</div>
+              <div class="admin-mock__menu-item" style="background:#e5e7eb;color:#111827;font-weight:600;">Доступ к устройству</div>
+            </div>
+            <div class="admin-mock__content">
+              <div style="display:flex;gap:14px;margin-bottom:8px;font-weight:700;">
+                <span style="color:#2563eb;border-bottom:2px solid #2563eb;padding-bottom:4px;">ISUP</span>
+                <span style="color:#9ca3af;">Hik-Connect</span>
+              </div>
+              <div class="admin-mock__row"><span>Включить</span><span style="color:#16a34a;">●вкл</span></div>
+              <div class="admin-mock__row is-target"><span>IP-адрес сервера</span><span>49.13.32.149</span></div>
+              <div class="admin-mock__row is-target"><span>Номер порта</span><span>6368</span></div>
+              <div class="admin-mock__row is-target"><span>Идентификатор устройства</span><span>integratioamazon6</span></div>
+              <div class="admin-mock__row is-target"><span>Ключ шифрования</span><span>••••••••</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>5. Нажмите «Сохранить»</h2>
+        <p>Статус регистрации сменится на «В сети» — обычно в течение нескольких секунд. Если этого
+        не произошло, проверьте, что все 4 значения скопированы без опечаток и лишних пробелов.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="video-section">
+    <h2 class="video-section__title">Видео-пример</h2>
+    <p class="video-section__note">Реальная запись экрана — весь путь от входа в веб-панель устройства
+    до заполнения ISUP-полей значениями со страницы устройства в Verifix.</p>
+    <video class="video-section__player" controls preload="metadata">
+      <source src="/static/video-webbrowser-isup-example.mp4" type="video/mp4" />
+      Ваш браузер не поддерживает встроенное видео — <a href="/static/video-webbrowser-isup-example.mp4">скачайте файл</a>.
+    </video>
+  </div>
+
+  <div class="guide__footer-note">
+    Значения на иллюстрациях — из тестовой записи, у вашего устройства будут свои. Способ через
+    экран самого устройства — <a href="/how-to-connect-isup">отдельная инструкция здесь</a>, если
+    удобнее настраивать на месте, без компьютера.
+  </div>
+</main>
+
+</body>
+</html>

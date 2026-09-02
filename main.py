@@ -89,6 +89,16 @@ def how_to_connect_isup_page(request: Request):
     return templates.TemplateResponse(request, "how_to_connect_isup.html", {})
 
 
+@app.get("/how-to-connect-isup-browser")
+def how_to_connect_isup_browser_page(request: Request):
+    """Способ Б со страницы просмотра устройства — тот же результат,
+    что через экран устройства (/how-to-connect-isup), но по браузеру
+    самого устройства. Вынесена в отдельную страницу по фидбеку —
+    раньше контент был встроен прямо в device_view.html, там теперь
+    просто ссылка, как и на способ через экран."""
+    return templates.TemplateResponse(request, "how_to_connect_isup_browser.html", {})
+
+
 @app.get("/device-create")
 def device_create_page(request: Request):
     """Форма создания устройства — повторяет реальную форму Verifix

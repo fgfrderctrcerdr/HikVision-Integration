@@ -108,12 +108,21 @@
       toggleGlobalOut.checked = false; syncGlobalOut();
       var outFirst = document.querySelector('input[name=outRule][value=first]');
       if (outFirst) outFirst.checked = true;
+      // По фидбоку: авто-генерация — настройка, актуальная только для
+      // варианта "Приходы и Уходы". При переключении на "Приходы"/
+      // "Уходы" её нужно явно выключать, а не оставлять как есть
+      // (раньше, если до этого выбрали "оба", чекбоксы так и оставались
+      // включёнными после переключения на один из вариантов).
+      autoIn.checked = false;
+      autoOut.checked = false;
     } else if (answer === 'out') {
       toggleSingleKind.checked = false; syncSingleKind();
       toggleGlobalIn.checked = false; syncGlobalIn();
       var inFirst = document.querySelector('input[name=inRule][value=first]');
       if (inFirst) inFirst.checked = true;
       toggleGlobalOut.checked = true; syncGlobalOut();
+      autoIn.checked = false;
+      autoOut.checked = false;
     } else if (answer === 'both') {
       toggleSingleKind.checked = true; syncSingleKind();
       var markRadio = document.querySelector('input[name=trackKind][value=mark]');
