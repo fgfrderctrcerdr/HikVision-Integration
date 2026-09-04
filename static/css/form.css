@@ -162,6 +162,41 @@ hr.field-sep { border: none; border-top: 1px solid var(--border); margin: 22px 0
   100% { box-shadow: 0 0 0 8px rgba(249,115,22,0); }
 }
 
+/* --- Предупреждение (жирным) на странице "через браузер" --- */
+.warning-box {
+  background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 14px 18px;
+  font-size: 13.5px; line-height: 1.6; color: #991b1b; margin: 0 0 20px;
+}
+.warning-box b { color: #7f1d1d; }
+
+/* --- Мини-макет "Управление людьми" (очистка локальных пользователей) --- */
+.people-mock { padding: 14px; position: relative; min-height: 220px; }
+.people-mock__toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 12px; }
+.people-mock__selectall { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.people-mock__delete { color: #dc2626; font-weight: 600; cursor: default; }
+.people-mock__grid { display: flex; gap: 10px; flex-wrap: wrap; }
+.people-mock__card {
+  display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; font-size: 10.5px; width: 140px;
+}
+.people-mock__card.is-selected { border-color: #f87171; background: #fef2f2; }
+.people-mock__avatar { width: 28px; height: 28px; border-radius: 50%; background: #e5e7eb; flex: none; }
+.people-mock__card span { color: var(--text-muted); }
+.people-mock__dialog-overlay {
+  position: absolute; inset: 0; background: rgba(255,255,255,0.7); display: flex;
+  align-items: center; justify-content: center;
+}
+.people-mock__dialog {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px;
+  text-align: center; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+.people-mock__dialog-icon { font-size: 20px; color: #f59e0b; margin-bottom: 6px; }
+.people-mock__dialog-actions { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+.people-mock__ok {
+  background: #dc2626; color: #fff; padding: 6px 18px; border-radius: 6px; font-weight: 700; position: relative;
+}
+.people-mock__cancel { color: var(--text-muted); padding: 6px 18px; }
+
 .serial-video { margin-top: 26px; }
 .serial-video__title { font-size: 14px; font-weight: 700; margin: 0 0 6px; }
 .serial-video__player { width: 100%; max-width: 560px; display: block; border-radius: 10px; background: #000; }

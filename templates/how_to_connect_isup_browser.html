@@ -27,6 +27,13 @@
     (адрес и порт шлюза HikCentral, ID устройства, ключ ISUP) — скопируйте их оттуда заранее.
   </p>
 
+  <div class="warning-box">
+    <b>Важно:</b> после этой настройки устройство будет распознавать <b>только тех сотрудников,
+    которые добавлены в Verifix и прикреплены к той же локации</b>, к которой прикреплено само
+    устройство. Локальные пользователи устройства (заведённые на нём напрямую, не через Verifix)
+    распознаваться не будут — поэтому их нужно удалить ещё до подключения по ISUP, см. шаг 3.
+  </div>
+
   <div class="guide__branch-note">
     <b>Перед началом:</b> откройте страницу устройства в Verifix (Устройства → выберите устройство →
     «Просмотр») в соседней вкладке — оттуда будете копировать значения для полей ниже.
@@ -66,7 +73,49 @@
 
     <li class="step">
       <div class="step__text">
-        <h2>3. Откройте «Конфигурация» → «Сеть» → «Доступ к устройству»</h2>
+        <h2>3. Удалите локальных пользователей устройства</h2>
+        <p>Откройте <b>«Управление людьми»</b> (иконка человечка слева), нажмите <b>«Выбрать все»</b>,
+        затем <b>«Удалить»</b> и подтвердите.</p>
+        <p class="note"><b>Зачем это нужно:</b> если на устройстве уже есть локально заведённые
+        пользователи, их внутренний ID может случайно совпасть с ID сотрудника в Verifix (сопоставление
+        идёт по ID→PIN) — тогда отметки будут попадать <b>не тому человеку либо вообще никому</b>.
+        Полная очистка перед подключением по ISUP убирает этот риск: дальше сопоставлением полностью
+        управляет Verifix.</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.64/doc/index.html#/peopleManage</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="people-mock">
+            <div class="people-mock__toolbar">
+              <label class="people-mock__selectall"><input type="checkbox" checked disabled /> Выбрать все</label>
+              <span class="people-mock__delete">🗑 Удалить</span>
+            </div>
+            <div class="people-mock__grid">
+              <div class="people-mock__card is-selected"><div class="people-mock__avatar"></div><div>Тест Тест<br /><span>ID 1285</span></div></div>
+              <div class="people-mock__card is-selected"><div class="people-mock__avatar"></div><div>HR Manager<br /><span>ID 1287</span></div></div>
+              <div class="people-mock__card is-selected"><div class="people-mock__avatar"></div><div>API<br /><span>ID 1297</span></div></div>
+            </div>
+            <div class="people-mock__dialog-overlay">
+              <div class="people-mock__dialog">
+                <div class="people-mock__dialog-icon">⚠</div>
+                <div>Удалить выбранных пользователей?</div>
+                <div class="people-mock__dialog-actions">
+                  <span class="people-mock__ok">ОК<span class="mini-tap"></span></span>
+                  <span class="people-mock__cancel">Отмена</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>4. Откройте «Конфигурация» → «Сеть» → «Доступ к устройству»</h2>
         <p>Слева — узкая колонка иконок, нажмите на значок шестерёнки («Конфигурация»). В меню —
         раздел <b>«Сеть»</b>, в нём — <b>«Доступ к устройству»</b>. На открывшейся странице выберите
         вкладку <b>ISUP</b> (обычно открыта по умолчанию).</p>
@@ -105,7 +154,7 @@
 
     <li class="step">
       <div class="step__text">
-        <h2>4. Впишите 4 значения со страницы устройства в Verifix</h2>
+        <h2>5. Впишите 4 значения со страницы устройства в Verifix</h2>
         <p>«IP-адрес сервера» и «Номер порта» — это <b>Адрес шлюза устройства HikCentral</b> и
         <b>Порт шлюза устройства HikCentral</b> в Verifix. «Идентификатор устройства» и «Ключ
         шифрования» — это <b>ID устройства</b> и <b>Ключ ISUP</b> там же. Переключите «Включить»,
@@ -149,7 +198,7 @@
 
     <li class="step">
       <div class="step__text">
-        <h2>5. Нажмите «Сохранить»</h2>
+        <h2>6. Нажмите «Сохранить»</h2>
         <p>Статус регистрации сменится на «В сети» — обычно в течение нескольких секунд. Если этого
         не произошло, проверьте, что все 4 значения скопированы без опечаток и лишних пробелов.</p>
       </div>
@@ -157,9 +206,19 @@
   </ol>
 
   <div class="video-section">
-    <h2 class="video-section__title">Видео-пример</h2>
-    <p class="video-section__note">Реальная запись экрана — весь путь от входа в веб-панель устройства
-    до заполнения ISUP-полей значениями со страницы устройства в Verifix.</p>
+    <h2 class="video-section__title">Видео-пример: очистка локальных пользователей</h2>
+    <p class="video-section__note">Реальная запись экрана — шаг 3 целиком: «Управление людьми» →
+    «Выбрать все» → «Удалить» → подтверждение.</p>
+    <video class="video-section__player" controls preload="metadata">
+      <source src="/static/video-clear-users-example.mp4" type="video/mp4" />
+      Ваш браузер не поддерживает встроенное видео — <a href="/static/video-clear-users-example.mp4">скачайте файл</a>.
+    </video>
+  </div>
+
+  <div class="video-section">
+    <h2 class="video-section__title">Видео-пример: вход и заполнение ISUP-полей</h2>
+    <p class="video-section__note">Шаги 1-2 и 4-6 — вход в веб-панель устройства и заполнение ISUP-полей
+    значениями со страницы устройства в Verifix.</p>
     <video class="video-section__player" controls preload="metadata">
       <source src="/static/video-webbrowser-isup-example.mp4" type="video/mp4" />
       Ваш браузер не поддерживает встроенное видео — <a href="/static/video-webbrowser-isup-example.mp4">скачайте файл</a>.
