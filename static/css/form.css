@@ -197,6 +197,24 @@ hr.field-sep { border: none; border-top: 1px solid var(--border); margin: 22px 0
 }
 .people-mock__cancel { color: var(--text-muted); padding: 6px 18px; }
 
+/* --- Модалка "Add" (System -> Account) для инструкции Dahua --- */
+.dahua-add-modal {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 14px 18px; width: 240px; font-size: 11px;
+}
+.dahua-add-modal__title { font-weight: 700; margin-bottom: 10px; font-size: 12px; }
+.dahua-add-modal__row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; }
+.dahua-add-modal__row span:first-child { color: var(--text-muted); flex: none; }
+.dahua-add-modal__input {
+  border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; flex: 1; text-align: right;
+}
+.dahua-add-modal__input.is-target { border-color: #f97316; background: rgba(249,115,22,0.08); }
+.dahua-add-modal__ok {
+  background: #2563eb; color: #fff; text-align: center; border-radius: 5px; padding: 6px;
+  font-weight: 700; margin-top: 8px; position: relative;
+}
+
 .serial-video { margin-top: 26px; }
 .serial-video__title { font-size: 14px; font-weight: 700; margin: 0 0 6px; }
 .serial-video__player { width: 100%; max-width: 560px; display: block; border-radius: 10px; background: #000; }

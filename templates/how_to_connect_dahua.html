@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Как подключить устройство Dahua к Verifix — Verifix</title>
+<link rel="stylesheet" href="/static/css/guide.css?v={{ v }}" />
+<link rel="stylesheet" href="/static/css/form.css?v={{ v }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title"><span class="topbar__hamburger">☰</span> Устройства</div>
+  <nav class="topbar__tabs">
+    <a href="/">Список устройств</a>
+    <a href="/how-to-connect-dahua" class="is-active">Интеграция с Dahua</a>
+  </nav>
+</header>
+
+<main class="guide">
+  <h1 class="guide__title">Как подключить устройство Dahua к Verifix</h1>
+  <p class="guide__intro">
+    В отличие от HikVision (там устройство само регистрируется на сервере по ISUP), у Dahua другая
+    механика: Verifix обращается к устройству напрямую, используя логин и пароль — те же, что вы
+    указали при создании устройства в Verifix. Их нужно завести на самом устройстве как отдельный
+    аккаунт. Понадобятся значения со страницы просмотра устройства в Verifix (Домен, Номер порта,
+    ИД устройства Dahua) — скопируйте их оттуда заранее.
+  </p>
+
+  <div class="warning-box">
+    <b>Важно:</b> после этой настройки устройство будет распознавать <b>только тех сотрудников,
+    которые добавлены в Verifix и прикреплены к той же локации</b>, к которой прикреплено само
+    устройство. Локальные пользователи устройства, заведённые не через Verifix, распознаваться не
+    будут — поэтому их нужно удалить ещё до создания аккаунта, см. шаг 1.
+  </div>
+
+  <div class="guide__branch-note">
+    <b>Перед началом:</b> откройте страницу устройства в Verifix (Устройства → выберите устройство
+    Dahua → «Просмотр») в соседней вкладке — оттуда будете копировать значения для шага 3, и оттуда
+    же — логин/пароль, указанные при создании устройства, для шага 2.
+  </div>
+
+  <ol class="steps">
+    <li class="step">
+      <div class="step__text">
+        <h2>1. Удалите локальных пользователей устройства</h2>
+        <p>Войдите в веб-панель устройства (IP-адрес устройства в браузере, логин/пароль администратора).
+        Откройте <b>«Person Management»</b> на главной панели, нажмите <b>«Add»</b> рядом переключатель
+        на выбор всех строк (чекбокс в шапке таблицы), затем <b>«Delete»</b> и подтвердите.</p>
+        <p class="note"><b>Зачем это нужно:</b> если на устройстве уже есть локально заведённые
+        пользователи, их данные могут конфликтовать с тем, что придёт из Verifix после подключения —
+        отметки будут попадать не туда. Полная очистка перед настройкой убирает этот риск.</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.45/#/index/personmanagement</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="people-mock">
+            <div class="people-mock__toolbar">
+              <label class="people-mock__selectall"><input type="checkbox" checked disabled /> Select All</label>
+              <span class="people-mock__delete">🗑 Delete</span>
+            </div>
+            <div class="people-mock__grid">
+              <div class="people-mock__card is-selected"><div class="people-mock__avatar"></div><div>Тест Тест<br /><span>ID 1285</span></div></div>
+              <div class="people-mock__card is-selected"><div class="people-mock__avatar"></div><div>HR Manager<br /><span>ID 1287</span></div></div>
+              <div class="people-mock__card is-selected"><div class="people-mock__avatar"></div><div>API<br /><span>ID 1297</span></div></div>
+            </div>
+            <div class="people-mock__dialog-overlay">
+              <div class="people-mock__dialog">
+                <div class="people-mock__dialog-icon">⚠</div>
+                <div>Delete selected users?</div>
+                <div class="people-mock__dialog-actions">
+                  <span class="people-mock__ok">OK<span class="mini-tap"></span></span>
+                  <span class="people-mock__cancel">Cancel</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="serial-video">
+        <h4 class="serial-video__title">Видео-пример: удаление всех пользователей устройства</h4>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-dahua-delete-users.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-dahua-delete-users.mp4">скачайте файл</a>.
+        </video>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>2. Создайте аккаунт с логином и паролем из Verifix</h2>
+        <p>Откройте <b>«System»</b> → вкладка <b>«Account»</b>, нажмите <b>«Add»</b>. В открывшейся
+        форме введите <b>Username</b> и <b>Password</b> — ровно те, что были указаны в полях
+        «Логин» и «Пароль» при создании этого устройства в Verifix (не логин администратора устройства
+        — отдельный аккаунт специально для Verifix).</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.45/#/index/systemManage/userManage</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="admin-mock" style="min-height:200px;">
+            <div class="admin-mock__menu" style="width:140px;">
+              <div class="admin-mock__menu-item" style="background:#e5e7eb;color:#111827;font-weight:600;">Account</div>
+              <div class="admin-mock__menu-item">Online User</div>
+              <div class="admin-mock__menu-item">Time</div>
+            </div>
+            <div class="admin-mock__content" style="position:relative;">
+              <div class="admin-mock__row"><span>admin</span><span>admin's account</span></div>
+              <div class="dahua-add-modal">
+                <div class="dahua-add-modal__title">Add</div>
+                <div class="dahua-add-modal__row"><span>Username</span><div class="dahua-add-modal__input is-target">adminVerifix</div></div>
+                <div class="dahua-add-modal__row"><span>Password</span><div class="dahua-add-modal__input is-target">••••••••••</div></div>
+                <div class="dahua-add-modal__row"><span>Confirm</span><div class="dahua-add-modal__input">••••••••••</div></div>
+                <div class="dahua-add-modal__ok">OK<span class="mini-tap"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="serial-video">
+        <h4 class="serial-video__title">Видео-пример: создание аккаунта с данными из Verifix</h4>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-dahua-add-account.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-dahua-add-account.mp4">скачайте файл</a>.
+        </video>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step__text">
+        <h2>3. Перенесите данные подключения из Verifix</h2>
+        <p>Откройте <b>«Communication Settings»</b> → <b>«Network Settings»</b> → <b>«Auto
+        Registration»</b>. Впишите <b>Server Address</b> и <b>Port</b> — это «Домен» и «Номер порта»
+        со страницы устройства в Verifix, а <b>Registration ID</b> — это «ИД устройства Dahua» там же.
+        Нажмите «Apply».</p>
+      </div>
+      <div class="browser-mock">
+        <div class="browser-mock__bar">
+          <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+          <div class="browser-mock__url">192.168.11.45/#/index/networkConfig/autoRegister</div>
+        </div>
+        <div class="browser-mock__body">
+          <div class="admin-mock" style="min-height:220px;">
+            <div class="admin-mock__menu" style="width:150px;">
+              <div class="admin-mock__menu-group">Network Settings</div>
+              <div class="admin-mock__menu-item">TCP/IP</div>
+              <div class="admin-mock__menu-item">Port</div>
+              <div class="admin-mock__menu-item" style="background:#e5e7eb;color:#111827;font-weight:600;">Auto Registration</div>
+            </div>
+            <div class="admin-mock__content">
+              <div class="admin-mock__row"><span>Enable</span><span style="color:#16a34a;">●вкл</span></div>
+              <div class="admin-mock__row is-target"><span>Server Address</span><span>78.47.103.18</span></div>
+              <div class="admin-mock__row is-target"><span>Port</span><span>9500</span></div>
+              <div class="admin-mock__row is-target"><span>Registration ID</span><span>44DFC826…C09A</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="serial-video">
+        <h4 class="serial-video__title">Видео-пример: перенос данных подключения</h4>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-dahua-transfer-data.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-dahua-transfer-data.mp4">скачайте файл</a>.
+        </video>
+      </div>
+    </li>
+  </ol>
+
+  <div class="guide__footer-note">
+    Значения на иллюстрациях — из тестовой записи, у вашего устройства будут свои.
+  </div>
+</main>
+
+</body>
+</html>

@@ -9,17 +9,43 @@
   var fieldAdmins = document.getElementById('fieldAdmins');
   var fieldUseMain = document.getElementById('fieldUseMain');
   var timepadAppBlock = document.getElementById('timepadAppBlock');
+  var fieldLogin = document.getElementById('fieldLogin');
+  var fieldPassword = document.getElementById('fieldPassword');
+  var serialGuideHikvision = document.getElementById('serialGuideHikvision');
+  var serialGuideDahua = document.getElementById('serialGuideDahua');
 
   function syncDeviceType() {
     var checked = document.querySelector('input[name=deviceType]:checked');
-    var isTimepad = checked && checked.value === 'timepad';
-    fieldModel.classList.toggle('is-hidden', isTimepad);
+    var val = checked ? checked.value : 'timepad';
+    var isTimepad = val === 'timepad';
+    var isDahua = val === 'dahua';
+    // "Модель устройства" — только у ZKTeco/Hikvision, не у Timepad (свой
+    // бренд, модель не нужна) и не у Dahua (там вместо этого Логин/Пароль).
+    fieldModel.classList.toggle('is-hidden', isTimepad || isDahua);
     fieldAdmins.classList.toggle('is-hidden', !isTimepad);
     fieldUseMain.classList.toggle('is-hidden', !isTimepad);
     timepadAppBlock.classList.toggle('is-hidden', !isTimepad);
+    fieldLogin.classList.toggle('is-hidden', !isDahua);
+    fieldPassword.classList.toggle('is-hidden', !isDahua);
+    // Мини-гид "как достать серийный номер" — своя версия под каждый тип
+    // устройства (разная механика меню на самом аппарате).
+    if (serialGuideHikvision) serialGuideHikvision.classList.toggle('is-hidden', isDahua);
+    if (serialGuideDahua) serialGuideDahua.classList.toggle('is-hidden', !isDahua);
   }
   deviceTypeRadios.forEach(function (r) { r.addEventListener('change', syncDeviceType); });
   syncDeviceType();
+
+  // Кнопка генерации пароля (Dahua) — просто случайная строка правдоподобного вида.
+  var regenBtn = document.getElementById('regeneratePasswordBtn');
+  var inputPassword = document.getElementById('inputPassword');
+  function generatePassword() {
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+    var out = '';
+    for (var i = 0; i < 10; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    return out;
+  }
+  if (inputPassword) inputPassword.value = generatePassword();
+  if (regenBtn) regenBtn.addEventListener('click', function () { inputPassword.value = generatePassword(); });
 
   var toggleSingleKind = document.getElementById('toggleSingleKind');
   var toggleSingleKindText = document.getElementById('toggleSingleKindText');
@@ -155,7 +181,11 @@
   // сохранения куда-либо.
   ['saveBtn', 'saveSyncBtn'].forEach(function (id) {
     var btn = document.getElementById(id);
-    if (btn) btn.addEventListener('click', function () { window.location.href = '/?device_created=1'; });
+    if (btn) btn.addEventListener('click', function () {
+      var checked = document.querySelector('input[name=deviceType]:checked');
+      var type = checked ? checked.value : 'timepad';
+      window.location.href = '/?device_created=1&type=' + type;
+    });
   });
 
   // ============================================================
@@ -168,8 +198,9 @@
   // ============================================================
   var params = new URLSearchParams(window.location.search);
   if (params.get('tour') !== '1') return;
+  var tourType = params.get('type') === 'dahua' ? 'dahua' : 'hikvision';
 
-  var steps = [
+  var stepsHikvision = [
     {
       el: document.getElementById('fieldDeviceType'), step: 'Шаг 1 из 4',
       title: 'Выберите тип устройства',
@@ -205,6 +236,53 @@
       instantOnFocus: true,
     },
   ];
+
+  var stepsDahua = [
+    {
+      el: document.getElementById('fieldDeviceType'), step: 'Шаг 1 из 6',
+      title: 'Выберите тип устройства',
+      text: 'Отметьте «Dahua» — форма подстроится под это устройство.',
+      waitFor: function () {
+        var c = document.querySelector('input[name=deviceType]:checked');
+        return !!c && c.value === 'dahua';
+      },
+    },
+    {
+      el: document.getElementById('fieldName'), step: 'Шаг 2 из 6',
+      title: 'Название',
+      text: 'Как устройство будет называться в списке — например, по месту установки.',
+      waitFor: function () { return document.getElementById('inputName').value.trim().length > 0; },
+    },
+    {
+      el: document.getElementById('fieldLocation'), step: 'Шаг 3 из 6',
+      title: 'Локация',
+      text: 'К какой локации относится устройство.',
+      waitFor: function () { return document.getElementById('inputLocation').value.trim().length > 0; },
+    },
+    {
+      el: document.getElementById('fieldSerial'), step: 'Шаг 4 из 6',
+      title: 'Серийный номер',
+      text: 'Ниже появится пошаговая инструкция, как достать серийный номер устройства.',
+      waitFor: function () { return document.getElementById('inputSerial').value.trim().length > 0; },
+      onEnter: function () { document.getElementById('serialGuideBox').classList.add('is-open'); },
+      instantOnFocus: true,
+    },
+    {
+      el: document.getElementById('fieldLogin'), step: 'Шаг 5 из 6',
+      title: 'Логин',
+      text: 'Понадобится позже — этот же логин нужно будет завести на самом устройстве как отдельный аккаунт.',
+      waitFor: function () { return document.getElementById('inputLogin').value.trim().length > 0; },
+    },
+    {
+      el: document.getElementById('fieldPassword'), step: 'Шаг 6 из 6',
+      title: 'Пароль',
+      text: 'Уже сгенерирован — можно оставить как есть или нажать ⟳ для нового. Этот же пароль потребуется на устройстве.',
+      waitFor: function () { return document.getElementById('inputPassword').value.trim().length > 0; },
+      instantOnFocus: true,
+    },
+  ];
+
+  var steps = tourType === 'dahua' ? stepsDahua : stepsHikvision;
 
   var idx = 0;
   var pollTimer = null;

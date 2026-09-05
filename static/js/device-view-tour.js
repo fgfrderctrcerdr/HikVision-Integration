@@ -28,6 +28,7 @@
 
   var isupBlock = document.getElementById('isupBlock');
   var setupGuide = document.getElementById('setupGuideBox');
+  var isDahua = params.get('type') === 'dahua';
 
   isupBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
@@ -35,8 +36,10 @@
     var highlight = VTourCommon.showHighlight(isupBlock);
     var card = VTourCommon.showCard(isupBlock, {
       step: 'Что дальше',
-      title: 'Вот данные для ISUP-подключения',
-      text: 'Эти 4 значения нужно перенести на само устройство — адрес и порт совпадают у всех, ID и ключ уникальны для этого устройства.',
+      title: isDahua ? 'Вот данные для подключения устройства' : 'Вот данные для ISUP-подключения',
+      text: isDahua
+        ? 'Эти 3 значения нужно перенести на само устройство — но перед этим устройство нужно подготовить (см. ниже, там объясняется зачем).'
+        : 'Эти 4 значения нужно перенести на само устройство — адрес и порт совпадают у всех, ID и ключ уникальны для этого устройства.',
       btnLabel: 'Понятно, дальше',
       onClick: function () {
         VTourCommon.removeHighlight(highlight);

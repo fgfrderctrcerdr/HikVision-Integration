@@ -112,6 +112,21 @@ body { margin: 0; background: var(--bg); color: var(--text); }
 }
 .menu-tile--target { color: #fff; font-weight: 600; }
 
+/* --- Вариант для Dahua: тёмно-синяя тема устройства (не серая, как у
+   Hikvision) + свой логотип внизу, по референс-видео Vladimir. --- */
+.device-mock--dahua { background: #0d1b33; border-color: #1c2d4d; }
+.device-mock--dahua .device-mock__header { color: #7ec8f2; }
+.device-mock--dahua .menu-tile { color: #a8c5e8; }
+.device-mock--dahua .menu-tile__icon { background: #163157; }
+.device-mock--dahua .settings-row { color: #d6e6f5; border-bottom-color: #1c2d4d; }
+.device-mock--dahua .settings-row--dim { color: #5b7ba3; }
+.device-mock--dahua .settings-row--glow { animation: row-glow-dahua 2.6s cubic-bezier(0.45,0,0.55,1) infinite; }
+@keyframes row-glow-dahua {
+  0%, 100% { background: rgba(126,200,242,0.09); }
+  50% { background: rgba(126,200,242,0.22); }
+}
+.device-mock--dahua-logo { text-align: center; color: #4a6da8; font-weight: 700; font-size: 11px; letter-spacing: 0.04em; margin-top: 10px; }
+
 /* --- Подсказка "клик" — по фидбеку: раньше это была просто пульсирующая
    точка, недостаточно похоже на настоящее нажатие. Теперь настоящая
    последовательность: точка (палец) опускается сверху → на месте

@@ -59,6 +59,20 @@
       <input type="search" placeholder="Поиск..." />
     </div>
 
+    <div class="field reveal is-hidden" id="fieldLogin">
+      <label>Логин <span class="required">*</span></label>
+      <input type="text" id="inputLogin" value="adminVerifix" />
+    </div>
+
+    <div class="field reveal is-hidden" id="fieldPassword">
+      <label>Пароль <span class="required">*</span></label>
+      <div style="position:relative;">
+        <input type="text" id="inputPassword" style="padding-right:38px;" />
+        <button type="button" id="regeneratePasswordBtn" title="Сгенерировать новый пароль"
+                style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:#6b7280;">⟳</button>
+      </div>
+    </div>
+
     <div class="field reveal" id="fieldAdmins">
       <label>Администраторы</label>
       <input type="search" placeholder="Поиск..." />
@@ -206,6 +220,7 @@
     <p class="serial-guide__intro">Два шага: сначала найдите IP-адрес устройства на самом устройстве,
     потом откройте по этому адресу веб-панель устройства в браузере — там серийный номер виден в настройках.</p>
 
+    <div class="reveal" id="serialGuideHikvision">
     <h3 class="serial-section-title">Шаг 1 — Находим IP-адрес</h3>
       <ol class="steps">
         <li class="step">
@@ -446,6 +461,161 @@
           Ваш браузер не поддерживает встроенное видео — <a href="/static/video-webpanel-example.mp4">скачайте файл</a>.
         </video>
       </div>
+    </div>
+
+    <!-- Dahua — тот же паттерн (2 шага: IP на устройстве, серийный номер
+         в браузере), но своя механика меню и свой мокап устройства
+         (тёмно-синяя тема, см. .device-mock--dahua в guide.css). Скрыт
+         по умолчанию, показывается вместо Hikvision-версии, когда выбран
+         Тип устройства = Dahua (см. device-tour.js syncDeviceType). -->
+    <div class="reveal is-hidden" id="serialGuideDahua">
+      <h3 class="serial-section-title">Шаг 1 — Находим IP-адрес</h3>
+      <ol class="steps">
+        <li class="step">
+          <div class="step__text">
+            <h2>1. Войдите в меню администратора</h2>
+            <p>Введите пароль администратора на экране устройства — тот, что был задан
+            при первичной настройке.</p>
+          </div>
+          <div class="device-mock device-mock--dahua">
+            <div class="device-mock__header">Login</div>
+            <div class="password-mock">
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-dot is-filled"></span>
+              <span class="password-cursor"></span>
+            </div>
+            <div class="device-mock--dahua-logo">DAHUA</div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>2. Откройте «Communication Settings» → «Network»</h2>
+            <p>В главном меню устройства (значок дома вверху слева открывает его) найдите
+            <b>«Communication Settings»</b>, в нём — <b>«Network»</b>.</p>
+          </div>
+          <div class="device-mock device-mock--dahua">
+            <div class="device-mock__header">Main Menu</div>
+            <div class="menu-grid">
+              <div class="menu-tile"><span class="menu-tile__icon">👤</span><span>User Mngmt</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">🔒</span><span>Access Control</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">🕐</span><span>Attendance</span></div>
+              <div class="menu-tile menu-tile--target"><span class="tap-indicator"></span><span class="menu-tile__icon">📡</span><span>Communication</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">⚙️</span><span>System Settings</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">🧩</span><span>Functions</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">📋</span><span>Records</span></div>
+              <div class="menu-tile"><span class="menu-tile__icon">ℹ️</span><span>System Info</span></div>
+            </div>
+            <div class="device-mock--dahua-logo">DAHUA</div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>3. Откройте «Wi-Fi» (или «Wired», если по кабелю)</h2>
+            <p>Внутри «Network» — список подключений, откройте актуальное для вашего устройства.</p>
+          </div>
+          <div class="device-mock device-mock--dahua">
+            <div class="device-mock__header">Communication Settings</div>
+            <div class="settings-list">
+              <div class="settings-row settings-row--target"><span class="row-label"><span class="tap-indicator tap-indicator--row"></span>Network</span></div>
+              <div class="settings-row settings-row--dim">RS-485 Settings</div>
+              <div class="settings-row settings-row--dim">Wiegand Settings</div>
+            </div>
+            <div class="device-mock--dahua-logo">DAHUA</div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>4. Посмотрите IP Address</h2>
+            <p>На экране Wi-Fi — строка <b>«IP Address»</b>. Его понадобится ввести в браузере на шаге 2.</p>
+          </div>
+          <div class="device-mock device-mock--dahua">
+            <div class="device-mock__header">Wi-Fi</div>
+            <div class="settings-list">
+              <div class="settings-row settings-row--dim">Verifix_2.4 <span class="value">✓</span></div>
+              <div class="settings-row settings-row--glow">IP Address <span class="value">192.168.11.45</span></div>
+              <div class="settings-row settings-row--dim">Subnet Mask <span class="value">255.255.255.0</span></div>
+              <div class="settings-row settings-row--dim">Default Gateway <span class="value">192.168.11.1</span></div>
+            </div>
+            <div class="device-mock--dahua-logo">DAHUA</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="serial-video">
+        <h4 class="serial-video__title">Видео-пример: поиск IP-адреса на самом устройстве</h4>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-dahua-findip.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-dahua-findip.mp4">скачайте файл</a>.
+        </video>
+      </div>
+
+      <h3 class="serial-section-title">Шаг 2 — Открываем админ-панель в браузере и ищем серийный номер</h3>
+      <ol class="steps">
+        <li class="step">
+          <div class="step__text">
+            <h2>1. Откройте IP-адрес устройства в браузере и войдите</h2>
+            <p>Введите IP-адрес (например, <code>192.168.11.45</code>) в адресную строку. Логин —
+            обычно <code>admin</code>, пароль — тот же, что на самом устройстве.</p>
+          </div>
+          <div class="browser-mock">
+            <div class="browser-mock__bar">
+              <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+              <div class="browser-mock__url">192.168.11.45</div>
+            </div>
+            <div class="browser-mock__body">
+              <div class="login-mock" style="background:linear-gradient(160deg,#2563eb,#1d4ed8);padding:26px 20px;">
+                <div style="width:44px;height:44px;border-radius:50%;background:#fff;margin:0 auto 14px;"></div>
+                <div class="login-mock__field">admin</div>
+                <div class="login-mock__field">••••••••</div>
+                <div class="login-mock__btn" style="background:#38bdf8;">Login<span class="mini-tap"></span></div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step__text">
+            <h2>2. Откройте «Maintenance Center» → «System Info» → «Version»</h2>
+            <p>Слева в списке разделов — <b>«Maintenance Center»</b> (значок гаечного ключа), в нём
+            <b>«System Info»</b> → <b>«Version»</b>.</p>
+          </div>
+          <div class="browser-mock">
+            <div class="browser-mock__bar">
+              <div class="browser-mock__dots"><span></span><span></span><span></span></div>
+              <div class="browser-mock__url">192.168.11.45/doc/index.html#/index/maintenanceCenter/SystemInfo</div>
+            </div>
+            <div class="browser-mock__body">
+              <div class="admin-mock">
+                <div class="admin-mock__menu" style="width:150px;">
+                  <div class="admin-mock__menu-item">One-click Diagnosis</div>
+                  <div class="admin-mock__menu-item is-target">System Info<span class="mini-tap" style="position:static;display:inline-block;margin-left:4px;"></span></div>
+                  <div class="admin-mock__menu-item" style="padding-left:26px;">Version</div>
+                  <div class="admin-mock__menu-item">Data Capacity</div>
+                </div>
+                <div class="admin-mock__content">
+                  <div class="admin-mock__row is-target"><span>Device SN</span><span>9C0F01DPAJ38F83</span></div>
+                  <div class="admin-mock__row"><span>System Version</span><span>V3.003...</span></div>
+                  <div class="admin-mock__row"><span>Hardware Version</span><span>V1.00</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="serial-video">
+        <h4 class="serial-video__title">Видео-пример: вход в веб-панель и поиск серийного номера</h4>
+        <video class="serial-video__player" controls preload="metadata">
+          <source src="/static/video-dahua-serial.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает встроенное видео — <a href="/static/video-dahua-serial.mp4">скачайте файл</a>.
+        </video>
+      </div>
+    </div>
   </div>
 </div>
 

@@ -46,6 +46,7 @@ DEVICES = [
     {"kind": "ZK", "ready": False, "serial": "ZK-SC405-0002", "name": "ZKTeco-Cafe-1", "location": "Кафе на Мустакиллик", "tz": "Asia/Tashkent", "status": "unknown", "last_seen": None},
     {"kind": "MOBILE", "ready": True, "serial": "SM-A536E-0187", "name": "Verifix ID — тест", "location": "Склад №1", "tz": "Asia/Tashkent", "status": "online", "last_seen": "24.08.2026 07:02:15"},
     {"kind": "HIK", "ready": True, "serial": "DS-K1T341-0004", "name": "Hikvision-Loading-Dock", "location": "Склад №2", "tz": "Asia/Tashkent", "status": "offline", "last_seen": "18.08.2026 12:30:00"},
+    {"kind": "DAHUA", "ready": True, "serial": "DHI-ASA3213F-0001", "name": "Dahua-Reception-1", "location": "Головной офис", "tz": "Asia/Tashkent", "status": "online", "last_seen": "05.09.2026 14:14:04"},
 ]
 
 STATUS_LABEL = {"online": "В сети", "offline": "Не в сети", "unknown": "Неизвестно"}
@@ -99,6 +100,15 @@ def how_to_connect_isup_browser_page(request: Request):
     return templates.TemplateResponse(request, "how_to_connect_isup_browser.html", {})
 
 
+@app.get("/how-to-connect-dahua")
+def how_to_connect_dahua_page(request: Request):
+    """Инструкция подключения Dahua — своя механика (аккаунт с
+    логином/паролем + Auto Registration), не ISUP. 3 шага: удалить
+    локальных пользователей, создать аккаунт с данными из Verifix,
+    перенести Домен/Порт/ИД устройства (см. how_to_connect_dahua.html)."""
+    return templates.TemplateResponse(request, "how_to_connect_dahua.html", {})
+
+
 @app.get("/device-create")
 def device_create_page(request: Request):
     """Форма создания устройства — повторяет реальную форму Verifix
@@ -113,11 +123,15 @@ def device_create_page(request: Request):
 def device_view_page(request: Request):
     """Просмотр устройства — повторяет реальную страницу Verifix
     (device_view, см. референс-скрины + видео Vladimir). Показывает
-    данные для ISUP-подключения (адрес/порт/ID/ключ) с кнопками
-    копирования. ?tour=1 запускает гид, подсвечивающий эти поля и
-    раскрывающий блок "как настроить устройство этими же данными"
-    (см. static/js/device-view-tour.js)."""
-    return templates.TemplateResponse(request, "device_view.html", {})
+    данные для подключения устройства с кнопками копирования — набор
+    полей зависит от типа устройства (?type=hikvision|dahua): у
+    HikVision это ISUP (адрес/порт/ID/ключ), у Dahua — Домен/Порт/ИД
+    устройства Dahua (другая механика, см. how_to_connect_dahua).
+    ?tour=1 запускает гид, подсвечивающий эти поля и раскрывающий блок
+    "как настроить устройство этими же данными" (см.
+    static/js/device-view-tour.js)."""
+    device_type = "dahua" if request.query_params.get("type") == "dahua" else "hikvision"
+    return templates.TemplateResponse(request, "device_view.html", {"device_type": device_type})
 
 
 @app.middleware("http")

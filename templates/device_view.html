@@ -40,8 +40,8 @@
 
     <div class="view-grid">
       <div class="view-col">
-        <div class="view-field"><label>Тип устройства</label><div class="view-field__box">Hikvision</div></div>
-        <div class="view-field"><label>Название</label><div class="view-field__box">Hikvision Entrance 1</div></div>
+        <div class="view-field"><label>Тип устройства</label><div class="view-field__box">{{ 'Dahua' if device_type == 'dahua' else 'Hikvision' }}</div></div>
+        <div class="view-field"><label>Название</label><div class="view-field__box">{{ 'Dahua-Reception-1' if device_type == 'dahua' else 'Hikvision Entrance 1' }}</div></div>
         <div class="view-field"><label>Локация</label><div class="view-field__box">Головной офис</div></div>
         <div class="view-field"><label>Последняя активность</label><div class="view-field__box">&nbsp;</div></div>
         <div class="view-field"><label>Авто-генерация приходов</label><div class="view-field__box">Нет</div></div>
@@ -58,6 +58,31 @@
       </div>
     </div>
 
+    {% if device_type == 'dahua' %}
+    <div class="view-isup" id="isupBlock">
+      <div class="view-field">
+        <label>Домен</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>78.47.103.18</span>
+          <button type="button" class="copy-btn" data-copy="78.47.103.18" title="Скопировать">⧉</button>
+        </div>
+      </div>
+      <div class="view-field">
+        <label>Номер порта</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>9500</span>
+          <button type="button" class="copy-btn" data-copy="9500" title="Скопировать">⧉</button>
+        </div>
+      </div>
+      <div class="view-field">
+        <label>ИД устройства Dahua</label>
+        <div class="view-field__box view-field__box--copy">
+          <span>44DFC82661428378E065C6CBE1C1C09A</span>
+          <button type="button" class="copy-btn" data-copy="44DFC82661428378E065C6CBE1C1C09A" title="Скопировать">⧉</button>
+        </div>
+      </div>
+    </div>
+    {% else %}
     <div class="view-isup" id="isupBlock">
       <div class="view-field">
         <label>Адрес шлюза устройства HikCentral</label>
@@ -88,13 +113,32 @@
         </div>
       </div>
     </div>
+    {% endif %}
 
-    <!-- Раскрывается гидом: "теперь настройте физическое устройство этими же значениями".
-         По фидбоку — оставлен только способ через браузер (не через экран устройства):
-         именно в этом сценарии нужен предварительный шаг "очистить локальных пользователей",
-         которого нет в сценарии с экрана, и держать оба варианта рядом было бы путающим. -->
+    <!-- Раскрывается гидом: "теперь настройте физическое устройство этими же значениями". -->
     <div class="setup-guide" id="setupGuideBox">
       <h2 class="setup-guide__title">Настройте устройство этими же данными</h2>
+      {% if device_type == 'dahua' %}
+      <p class="setup-guide__intro">Скопируйте 3 значения выше и введите их на самом устройстве —
+      через браузер устройства.</p>
+
+      <div class="warning-box">
+        <b>Важно:</b> прежде чем переносить эти данные, устройство нужно подготовить — удалить
+        локальных пользователей и завести аккаунт с логином и паролем, указанными при создании
+        устройства в Verifix. Иначе отметки могут попадать не тому человеку либо вообще никому.
+        Инструкция ниже расписывает всё по порядку.
+      </div>
+
+      <div class="setup-methods">
+        <div class="setup-method" style="flex:none;width:100%;">
+          <h3 class="setup-method__title">Через браузер устройства</h3>
+          <p class="setup-method__text">Три шага: удалить локальных пользователей → создать аккаунт
+          с логином/паролем из Verifix → перенести Домен/Порт/ИД устройства в
+          <b>Communication Settings → Network Settings → Auto Registration</b>.</p>
+          <a href="/how-to-connect-dahua" class="setup-method__link" target="_blank">Открыть инструкцию →</a>
+        </div>
+      </div>
+      {% else %}
       <p class="setup-guide__intro">Скопируйте 4 значения выше и введите их на самом устройстве —
       через браузер устройства.</p>
 
@@ -115,6 +159,7 @@
           <a href="/how-to-connect-isup-browser" class="setup-method__link" target="_blank">Открыть инструкцию →</a>
         </div>
       </div>
+      {% endif %}
     </div>
   </main>
 </div>

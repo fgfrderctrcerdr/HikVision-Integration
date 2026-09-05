@@ -127,6 +127,7 @@ button.topbar__tab {
 .device-badge--hik { color: #dc2626; background: #fef2f2; font-style: italic; }
 .device-badge--zk { color: #374151; background: #f3f4f6; }
 .device-badge--mobile { color: #2563eb; background: #eff6ff; }
+.device-badge--dahua { color: #0d1b33; background: #dbeafe; font-weight: 800; }
 
 .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 .status-dot--online { background: var(--green); }

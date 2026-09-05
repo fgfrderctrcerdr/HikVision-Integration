@@ -15,6 +15,7 @@
     <a href="#" class="topbar__tab is-active">Новые устройства</a>
     <a href="#" class="topbar__tab">Состояние сотрудников по устройствам</a>
     <button type="button" class="topbar__tab" id="startHikvisionTour">Интеграция с HikVision</button>
+    <button type="button" class="topbar__tab" id="startDahuaTour">Интеграция с Dahua</button>
     <a href="/how-to-find-ip" class="topbar__tab topbar__tab--guide">Вариант A: по IP-адресу</a>
     <a href="/how-to-connect-isup" class="topbar__tab topbar__tab--guide2">Вариант Б: через ISUP →</a>
   </nav>
@@ -125,9 +126,9 @@
 <script src="/static/js/tour-common.js?v={{ v }}"></script>
 <script>
 (function () {
-  var startBtn = document.getElementById('startHikvisionTour');
   var createBtn = document.getElementById('createDeviceBtn');
   var highlight = null, arrow = null, card = null;
+  var pendingType = 'hikvision';
 
   function clearTour() {
     VTourCommon.removeHighlight(highlight);
@@ -136,16 +137,26 @@
     highlight = arrow = card = null;
   }
 
-  startBtn.addEventListener('click', function () {
-    if (highlight) { clearTour(); return; }   // повторный клик — скрыть
-    highlight = VTourCommon.showHighlight(createBtn);
-    arrow = VTourCommon.drawArrow(startBtn, createBtn, { toEdge: 'right' });
-    card = VTourCommon.showCard(createBtn, {
-      step: 'Шаг 1 из 1 на этой странице',
-      title: 'Нажмите «Создать»',
-      text: 'Форма создания устройства откроется с подсказками — заполним поля вместе, шаг за шагом.',
+  // Общая логика для обеих кнопок-точек входа ("Интеграция с
+  // HikVision"/"Интеграция с Dahua") — отличается только текстом и тем,
+  // какой тип устройства подставится дальше при клике "Создать".
+  function wireEntryPoint(btnId, type) {
+    var btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      if (highlight) { clearTour(); return; }   // повторный клик — скрыть
+      pendingType = type;
+      highlight = VTourCommon.showHighlight(createBtn);
+      arrow = VTourCommon.drawArrow(btn, createBtn, { toEdge: 'right' });
+      card = VTourCommon.showCard(createBtn, {
+        step: 'Шаг 1 из 1 на этой странице',
+        title: 'Нажмите «Создать»',
+        text: 'Форма создания устройства откроется с подсказками — заполним поля вместе, шаг за шагом.',
+      });
     });
-  });
+  }
+  wireEntryPoint('startHikvisionTour', 'hikvision');
+  wireEntryPoint('startDahuaTour', 'dahua');
 
   window.addEventListener('resize', function () {
     if (!highlight) return;
@@ -154,7 +165,7 @@
   });
 
   createBtn.addEventListener('click', function () {
-    window.location.href = '/device-create?tour=1';
+    window.location.href = '/device-create?tour=1&type=' + pendingType;
   });
 
   // Клик по строке устройства — раскрывает панель действий
@@ -174,41 +185,61 @@
   document.querySelectorAll('[data-goto-view]').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
-      window.location.href = '/device-view?tour=1';
+      var actionsRow = btn.closest('.device-row-actions');
+      var rowId = actionsRow ? actionsRow.dataset.actionsFor : null;
+      var sourceRow = rowId !== null ? document.querySelector('.device-row[data-row-id="' + rowId + '"]') : null;
+      var kind = sourceRow ? sourceRow.dataset.kind : '';
+      var t = kind === 'dahua' ? 'dahua' : 'hikvision';
+      window.location.href = '/device-view?tour=1&type=' + t;
     });
   });
 
   // ============================================================
   // Второй гид — после сохранения устройства (device-create.html
-  // редиректит сюда с ?device_created=1). Ведёт: кликните на
-  // устройство HikVision -> нажмите "Просмотр" -> дальше гид
-  // продолжается на странице просмотра устройства.
+  // редиректит сюда с ?device_created=1&type=...). Ведёт: кликните на
+  // созданное устройство -> нажмите "Просмотр" -> дальше гид
+  // продолжается на странице просмотра устройства. Тип устройства
+  // (hikvision/dahua) определяет, какую строку подсвечивать и какой
+  // текст показывать (ISUP vs Домен/Порт/ID) — переиспользуем ОДНУ и
+  // ту же логику для обоих сценариев, не дублируем код.
   // ============================================================
   var params = new URLSearchParams(window.location.search);
+  var viewType = params.get('type') === 'dahua' ? 'dahua' : 'hikvision';
   if (params.get('device_created') !== '1') return;
 
-  var firstHikRow = document.querySelector('.device-row[data-kind="hik"]');
-  if (!firstHikRow) return;
+  var rowKind = viewType === 'dahua' ? 'dahua' : 'hik';
+  var targetRow = document.querySelector('.device-row[data-kind="' + rowKind + '"]');
+  if (!targetRow) return;
 
-  var postSaveHighlight = VTourCommon.showHighlight(firstHikRow);
-  var postSaveCard = VTourCommon.showCard(firstHikRow, {
+  var stepText = viewType === 'dahua'
+    ? 'Кликните на строку этого устройства Dahua, чтобы открыть панель действий.'
+    : 'Кликните на строку этого устройства HikVision, чтобы открыть панель действий.';
+  var cardTitle = viewType === 'dahua'
+    ? 'Устройство создано — заберём данные для подключения'
+    : 'Устройство создано — заберём данные для ISUP';
+
+  var postSaveHighlight = VTourCommon.showHighlight(targetRow);
+  var postSaveCard = VTourCommon.showCard(targetRow, {
     step: 'Что дальше',
-    title: 'Устройство создано — заберём данные для ISUP',
-    text: 'Кликните на строку этого устройства HikVision, чтобы открыть панель действий.',
+    title: cardTitle,
+    text: stepText,
   });
-  firstHikRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-  firstHikRow.addEventListener('vtour:rowOpened', function onOpened() {
-    firstHikRow.removeEventListener('vtour:rowOpened', onOpened);
+  targetRow.addEventListener('vtour:rowOpened', function onOpened() {
+    targetRow.removeEventListener('vtour:rowOpened', onOpened);
     VTourCommon.removeHighlight(postSaveHighlight);
     VTourCommon.removeCard(postSaveCard);
 
-    var viewBtn = document.querySelector('.device-row-actions[data-actions-for="' + firstHikRow.dataset.rowId + '"] [data-goto-view]');
+    var viewBtn = document.querySelector('.device-row-actions[data-actions-for="' + targetRow.dataset.rowId + '"] [data-goto-view]');
+    var viewText = viewType === 'dahua'
+      ? 'Там — данные для подключения устройства: домен, порт и ID устройства Dahua.'
+      : 'Там — данные для подключения устройства по ISUP: адрес, порт, ID и ключ.';
     var highlight2 = VTourCommon.showHighlight(viewBtn);
     var card2 = VTourCommon.showCard(viewBtn, {
       step: 'Что дальше',
       title: 'Нажмите «Просмотр»',
-      text: 'Там — данные для подключения устройства по ISUP: адрес, порт, ID и ключ.',
+      text: viewText,
     });
     window.addEventListener('resize', function () {
       VTourCommon.updateHighlight(highlight2, viewBtn);
